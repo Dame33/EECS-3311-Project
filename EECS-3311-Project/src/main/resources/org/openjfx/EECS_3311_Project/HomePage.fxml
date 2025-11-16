@@ -6,44 +6,60 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
 
+<BorderPane xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.EECS_3311_Project.HomePageController">
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.EECS_3311_Project.HomePageController">
-   <children>
-      <Button layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Main Menu" textFill="#2680c0" />
-      <Button layoutX="120.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Bookings" />
-      <Button layoutX="240.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="CEC Tools" />
-      <Button layoutX="360.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Admin Tools" />
-      <Button layoutX="480.0" layoutY="1.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Logout" />
-      <Line endX="23.0" endY="-3.814697265625E-6" layoutX="101.0" layoutY="35.0" startX="-100.0" stroke="#2680c0" strokeWidth="1.5" />
-      <ImageView fitHeight="217.0" fitWidth="265.0" layoutX="23.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../images/2048px-Default_pfp.svg.png" />
-         </image>
-      </ImageView>
-      <Text layoutX="60.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email: " />
-      <Text layoutX="60.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account Type:" />
-      <Accordion layoutX="360.0" layoutY="75.0" prefHeight="293.0" prefWidth="202.0">
-        <panes>
-          <TitledPane animated="false" text="untitled 1">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="untitled 2">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-          <TitledPane animated="false" text="untitled 3">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
-          </TitledPane>
-        </panes>
-      </Accordion>
-      <Text layoutX="407.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Bookings" />
-   </children>
-</AnchorPane>
+    <top>
+        <HBox style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
+            <children>
+                <Button fx:id="button_mainMenu" maxWidth="Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="0.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Main Menu" textFill="#2680c0" HBox.hgrow="ALWAYS" />
+                <Button fx:id="button_Bookings" maxWidth="Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="0.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Bookings" HBox.hgrow="ALWAYS" />
+                <Button fx:id="button_CECTools" maxWidth="Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="0.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="CEC Tools" HBox.hgrow="ALWAYS" />
+                <Button fx:id="button_AdminTools" maxWidth="Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="0.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Admin Tools" HBox.hgrow="ALWAYS" />
+                <Button fx:id="button_Logout" maxWidth="Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="0.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Logout" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane style="-fx-background-color: white;"> <children>
+            <AnchorPane fx:id="anchorPane_homePage" maxHeight="400.0" maxWidth="600.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;">
+                <children>
+                    <ImageView fitHeight="217.0" fitWidth="265.0" layoutX="23.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../../images/2048px-Default_pfp.svg.png" />
+                        </image>
+                    </ImageView>
+                    <Text fx:id="text_email" layoutX="60.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email: " />
+                    <Text fx:id="text_accountType" layoutX="60.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account Type:" />
+                    <Accordion layoutX="360.0" layoutY="75.0" prefHeight="293.0" prefWidth="202.0" style="-fx-background-image: white;">
+                        <panes>
+                            <TitledPane animated="false" text="untitled 1">
+                                <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="untitled 2">
+                                <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="untitled 3">
+                                <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                </content>
+                            </TitledPane>
+                        </panes>
+                    </Accordion>
+                    <Text layoutX="407.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upcoming Bookings" />
+                </children>
+            </AnchorPane>
+        </children>
+        </StackPane>
+    </center>
+
+</BorderPane>
