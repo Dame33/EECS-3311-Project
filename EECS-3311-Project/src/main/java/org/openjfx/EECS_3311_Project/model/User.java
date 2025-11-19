@@ -53,6 +53,38 @@ public class User {
 		this.userType = userType;
 		this.accountRole = accountType;
 	}
+	public User(String userCSVRow) {
+		String[] parts = userCSVRow.split(",", -1);
+		
+		if (parts.length < 8 ) {
+            System.err.println("Can't parse user from this row: " + userCSVRow);
+            return;
+        }
+
+
+        
+
+        String id = parts[0];
+        String firstName = parts[1];
+        String lastName = parts[2];
+        String email = parts[3];
+        String password = parts[4];
+        String userType = parts[5];
+        // parts[6] is bookings
+        //String bookings = parts[6];
+        String accountRoleId = parts[7];
+        
+        
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        this.accountRole = new AccountRole();
+        this.accountRole.setId(accountRoleId);
+
+	}
 	
 	
 	public String toCSVRow() {// update to join by comma, added suppoort for bookings

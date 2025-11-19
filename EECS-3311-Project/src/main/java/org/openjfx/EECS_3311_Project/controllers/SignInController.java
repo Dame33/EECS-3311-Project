@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.openjfx.EECS_3311_Project.Mediator;
+import org.openjfx.EECS_3311_Project.Session;
 import org.openjfx.EECS_3311_Project.managers.SceneManager;
 import org.openjfx.EECS_3311_Project.model.User;
 
@@ -70,6 +71,7 @@ public class SignInController implements Initializable {
                 User user  = mediator.signIn(tf_email.getText(), tf_password.getText());
                 
                 if (user != null) {
+                	Session.setUser(user);
                     SceneManager.changeScene(event, "HomePage.fxml", "Home", user.getEmail(), user.getAccountRole().getRoleName());
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);

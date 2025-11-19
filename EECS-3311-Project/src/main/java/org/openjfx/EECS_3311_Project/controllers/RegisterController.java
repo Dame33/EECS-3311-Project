@@ -1,9 +1,11 @@
 package org.openjfx.EECS_3311_Project.controllers;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import org.openjfx.EECS_3311_Project.Mediator;
+import org.openjfx.EECS_3311_Project.Session;
 import org.openjfx.EECS_3311_Project.managers.SceneManager;
 import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.User;
@@ -24,7 +26,7 @@ public class RegisterController implements Initializable {
 
     Mediator mediator = Mediator.getInstance();
 
-    @FXML private ComboBox<String> comboBox;
+    @FXML private ComboBox<AccountRole> comboBox;
     @FXML private AnchorPane anchorPane_registerPage;
 
     @FXML private TextField tf_FirstName;
@@ -62,7 +64,9 @@ public class RegisterController implements Initializable {
             }
         });
 
-        comboBox.getItems().addAll("Student", "Faculty", "Staff", "Partner");
+        // get list of account types
+        ArrayList<AccountRole> accountRoles = mediator.getAccountRoles();
+        comboBox.getItems().addAll(accountRoles);
 
         button_Register.setOnAction(event -> registerUser(event));
     }
@@ -101,18 +105,19 @@ public class RegisterController implements Initializable {
 
         } else {
 
-            System.out.println("Registering User");
+            //System.out.println("Registering User");
 
             User user = mediator.createAccount(
                     password,
                     tf_email.getText(),
-                    new AccountRole(comboBox.getValue(), "0", 0.0), // temp value
+                    comboBox.getValue(),
                     tf_FirstName.getText(),
                     tf_LastName.getText(),
                     "User"
             );
 
             if (user != null) {
+            	Session.setUser(user);
                 SceneManager.changeScene(event, "HomePage.fxml", "Home", user.getEmail(), user.getAccountRole().getRoleName());
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);

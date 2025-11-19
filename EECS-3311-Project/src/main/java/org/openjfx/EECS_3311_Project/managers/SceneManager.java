@@ -46,7 +46,7 @@ public class SceneManager {
 
               // pass current user to navbar for role-based visibility
               NavbarController navbarController = navbarLoader.getController();
-              navbarController.updateForUser(Session.getUser());
+              //snavbarController.updateForUser(Session.getUser());
           }
 
       } catch (IOException e) {

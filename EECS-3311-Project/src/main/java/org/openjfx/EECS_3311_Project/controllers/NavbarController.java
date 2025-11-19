@@ -26,13 +26,12 @@ public class NavbarController {
     @FXML
     public void initialize() {
         User currentUser = Session.getUser();
-
         button_CECTools.setVisible(false);
         button_AdminTools.setVisible(false);
-
+        
         if (currentUser != null) {
-            String role = currentUser.getAccountRole().getRoleName();
-
+            String role = currentUser.getUserType();
+            
             switch (role) {
                 case "CEC":
                     button_CECTools.setVisible(true);
@@ -51,7 +50,6 @@ public class NavbarController {
             }
         }
 
-        // Set button actions
         button_mainMenu.setOnAction(this::onMainMenuClicked);
         button_Bookings.setOnAction(this::onBookingsClicked);
         button_CECTools.setOnAction(this::onCECToolsClicked);
@@ -61,7 +59,6 @@ public class NavbarController {
 
     private void onMainMenuClicked(ActionEvent event) {
         System.out.println("Main Menu clicked");
-        // TODO: switch scene or notify parent
     }
 
     private void onBookingsClicked(ActionEvent event) {
@@ -73,7 +70,7 @@ public class NavbarController {
     }
 
     private void onAdminToolsClicked(ActionEvent event) {
-        System.out.println("Admin Tools clicked");
+    	SceneManager.changeScene(event, "AdminTools.fxml", "Admin Tools", null, null);
     }
 
     private void onLogoutClicked(ActionEvent event) {
@@ -82,8 +79,5 @@ public class NavbarController {
 
     }
 
-	public void updateForUser(User user) {
-		// TODO Auto-generated method stub
-		
-	}
+
 }
