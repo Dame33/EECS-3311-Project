@@ -1,0 +1,20 @@
+1,Room 101,true,50,Building A
+2,Room 102,false,30,Building B
+3,Lab 1,true,20,Building C
+4,Conference Hall,true,100,Building A
+5,Auditorium,false,200,Building D
+6,Room 103,true,45,Building B
+7,Lab 2,true,25,Building C
+8,Meeting Room 1,true,15,Building A
+9,Room 104,false,35,Building B
+10,Lecture Hall 1,true,120,Building D
+11,Room 105,true,40,Building C
+12,Seminar Room,true,30,Building A
+13,Room 106,false,50,Building B
+14,Lab 3,true,20,Building C
+15,Conference Hall 2,true,90,Building D
+16,Auditorium 2,false,180,Building A
+17,Room 107,true,60,Building B
+18,Meeting Room 2,true,20,Building C
+19,Room 108,false,40,Building A
+20,Lecture Hall 2,true,150,Building D

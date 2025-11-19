@@ -1,11 +1,14 @@
 package org.openjfx.EECS_3311_Project;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.openjfx.EECS_3311_Project.managers.UserManager;
 import org.openjfx.EECS_3311_Project.model.AccountRole;
+import org.openjfx.EECS_3311_Project.model.Room;
 import org.openjfx.EECS_3311_Project.model.User;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 
 public class Mediator {
@@ -16,6 +19,7 @@ public class Mediator {
 //    private final BookingManager bookingManager;
     // private final RoomManager roomManager;
      private final UserManager userManager = new UserManager();
+     private final RoomManger roomManager = new RoomManger();
     // private final PaymentManager paymentManager;
      
      
@@ -40,6 +44,14 @@ public class Mediator {
 	public User signIn( String email, String password) {
 		return userManager.signIn(email, password);
 		
+	}
+
+	public ArrayList<AccountRole> getAccountRoles() {
+		return userManager.getAccountRoles();
+	}
+
+	public ArrayList<Room> getAllRooms() {
+		return roomManager.getAllRooms();
 	}
 	
 	

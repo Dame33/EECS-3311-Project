@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
+import org.openjfx.EECS_3311_Project.model.Room;
 import org.openjfx.EECS_3311_Project.model.Status;
 import org.openjfx.EECS_3311_Project.model.User;
 
@@ -165,8 +166,10 @@ public class CSVAdapter implements ICSVRepository{
 
             while ((line = br.readLine()) != null) {
                 if (line.isBlank()) continue;
-
-                User user = parseUser(line);
+                
+                User user = getUser(line);
+                // add account role
+                
                 if (user != null) {
                     users.add(user);
                 }
@@ -178,31 +181,38 @@ public class CSVAdapter implements ICSVRepository{
 
         return users;
     }
-
-    private User parseUser(String line) {
-
-        String[] parts = line.split(",", -1);
-
-        if (parts.length < 8) {
-            System.err.println("Skipping invalid user CSV line: " + line);
-            return null;
-        }
-
-        String id = parts[0];
-        String firstName = parts[1];
-        String lastName = parts[2];
-        String email = parts[3];
-        String password = parts[4];
-        String userType = parts[5];
-        // parts[6] is bookings
-        //String bookings = parts[6];
-        String accountRoleId = parts[7];
-        
-        AccountRole accountRole = new AccountRole("User", accountRoleId, 0.0); // temp
-
-        return new User(id, firstName, lastName, email, password, userType, accountRole);
+    
+    private User getUser(String userCSV) { // uses a csv line to populate a user object with all dependencies 
+    	User user = new User(userCSV);
+    	
+    	String accountRoleRow = getAccountRoleRowById(user.getAccountRole().getId());
+    	AccountRole accountRole = new AccountRole(accountRoleRow);
+    	
+    	user.setAccountRole(accountRole);
+    	
+    	// populate user bookings here
+    	// user.setBookings(....)
+    	
+    	return user;
     }
     
+    private String getAccountRoleRowById(String id) {
+    	
+    	try (BufferedReader br = new BufferedReader(new FileReader(DatabaseUtils.accountRolesFilePath.toString()))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",", -1);
+                if (parts.length > 0 && parts[0].equals(id)) {
+                    return line; // return full row
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    };
+
+  
     private String bookingToCsvLine(Booking b) {
         // convert Booking fields → CSV line string
         return "";
@@ -388,8 +398,7 @@ public class CSVAdapter implements ICSVRepository{
 
                     if (emailInFile.equalsIgnoreCase(cleanEmail) && passwordInFile.equals(password)) {
 
-
-                        return parseUser(line);
+                    	return getUser(line);
                     }
                 }
             }
@@ -407,6 +416,60 @@ public class CSVAdapter implements ICSVRepository{
 	public User updateAdmin(User user, Boolean isAdmin) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+
+
+
+	@Override
+	public ArrayList<AccountRole> getAccountRoles() {
+	    ArrayList<AccountRole> roles = new ArrayList<>();
+
+
+	    try (BufferedReader br = new BufferedReader(new FileReader(DatabaseUtils.accountRolesFilePath.toString()))) {
+	        String line;
+
+	        while ((line = br.readLine()) != null) {
+	            if (line.trim().isEmpty()) continue;
+
+	            AccountRole role = new AccountRole(line);
+
+	            roles.add(role);
+	        }
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return roles;
+	}
+
+
+
+
+
+
+	@Override
+	public ArrayList<Room> getAllRooms() {
+			
+		        ArrayList<Room> rooms = new ArrayList<>();
+
+		        try {
+		            ArrayList<String> lines = new ArrayList<>(Files.readAllLines(Path.of(DatabaseUtils.roomsFilePath.toString())));
+
+		            for (int i = 1; i < lines.size(); i++) {
+		                String line = lines.get(i);
+		                Room room = new Room(line); 
+		                rooms.add(room);
+		            }
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+
+		        return rooms;
+		    
 	}
 
 }

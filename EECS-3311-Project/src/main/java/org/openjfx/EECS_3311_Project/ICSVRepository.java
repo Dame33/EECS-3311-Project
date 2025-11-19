@@ -3,7 +3,9 @@ package org.openjfx.EECS_3311_Project;
 import javafx.event.ActionEvent;
 import java.util.ArrayList;
 
+import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
+import org.openjfx.EECS_3311_Project.model.Room;
 import org.openjfx.EECS_3311_Project.model.User;
 
 public interface ICSVRepository {
@@ -27,4 +29,6 @@ public interface ICSVRepository {
     ArrayList<User> getAllUsers(); 
     User updateAdmin(User user, Boolean isAdmin);
 	boolean isEmailTaken(String text);
+	ArrayList<AccountRole> getAccountRoles();
+	ArrayList<Room> getAllRooms();
 }
