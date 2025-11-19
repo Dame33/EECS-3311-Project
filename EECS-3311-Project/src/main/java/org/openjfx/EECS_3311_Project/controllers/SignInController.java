@@ -1,9 +1,10 @@
-package org.openjfx.EECS_3311_Project;
+package org.openjfx.EECS_3311_Project.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -12,10 +13,17 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.openjfx.EECS_3311_Project.Mediator;
+import org.openjfx.EECS_3311_Project.SceneManager;
+import org.openjfx.EECS_3311_Project.model.User;
+
+
+
 public class SignInController implements Initializable {
 
     private final String userDB_CSV = "UserDB.csv";
     private final String bookingDB = "BookingDB.csv";
+    Mediator mediator = Mediator.getInstance();
 
 
     @FXML
@@ -30,7 +38,6 @@ public class SignInController implements Initializable {
     @FXML
     private PasswordField tf_password;
 
-    FileRepository icsv = new FileRepository(UsersDatabaseUtils.bookingDB, UsersDatabaseUtils.userDB_CSV);
 
 
     @Override
@@ -61,7 +68,16 @@ public class SignInController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
 
-                icsv.signIn(event, tf_email.getText(), tf_password.getText());
+                User user  = mediator.signIn(tf_email.getText(), tf_password.getText());
+                
+                if (user != null) {
+                    SceneManager.changeScene(event, "HomePage.fxml", "Home", user.getEmail(), user.getAccountRole().getRoleName());
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Invalid credentials entered.");
+                    alert.show();
+                }
+                
             }
         });
 
@@ -70,7 +86,7 @@ public class SignInController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
 
-                UsersDatabaseUtils.changeScene(event, "Register.fxml", "Register", null, null);
+            	SceneManager.changeScene(event, "Register.fxml", "Register", null, null);
             }
         });
 

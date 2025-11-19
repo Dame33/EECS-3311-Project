@@ -1,4 +1,4 @@
-package org.openjfx.EECS_3311_Project;
+package org.openjfx.EECS_3311_Project.model;
 
 enum Page {
     HOME,

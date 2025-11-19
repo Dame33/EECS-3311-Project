@@ -1,7 +1,8 @@
-package org.openjfx.EECS_3311_Project;
+package org.openjfx.EECS_3311_Project.model;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class User {
 	private String id;
@@ -10,8 +11,8 @@ public class User {
 	private String email;
 	private String password;
 	private String userType;
-	private ArrayList<Booking> bookings;
-	private String accountType;
+	private ArrayList<Booking> bookings = new ArrayList<Booking>();
+	private AccountRole accountRole;
 
 
 	public User(String id, String firstName, String lastName, String email, String password) {
@@ -31,7 +32,18 @@ public class User {
     }
 
 	//constructor with added parameters not including bookings
-	public User(String id, String firstName, String lastName, String email, String password, String userType, String accountType)
+//	public User(String id, String firstName, String lastName, String email, String password, String userType, String accountType)
+//	{
+//		this.id = UUID.randomUUID().toString();
+//		this.firstName = firstName;
+//		this.lastName = lastName;
+//		this.email = email;
+//		this.password = password;
+//		this.userType = userType;
+//		this.accountType = accountType;
+//	}
+	
+	public User(String id, String firstName, String lastName, String email, String password, String userType, AccountRole accountType)
 	{
 		this.id = UUID.randomUUID().toString();
 		this.firstName = firstName;
@@ -39,7 +51,16 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.userType = userType;
-		this.accountType = accountType;
+		this.accountRole = accountType;
+	}
+	
+	
+	public String toCSVRow() {// update to join by comma, added suppoort for bookings
+		String bookings = this.getBookings().stream()
+		        .map(Booking::getId)     
+		        .map(String::valueOf)   
+		        .collect(Collectors.joining(";")); 
+		return String.join(",", id, this.getFirstName(), this.getLastName(), this.getEmail(), this.getPassword(), this.getUserType(), "[" + bookings + "]", this.getAccountRole().getId());
 	}
 	
 	public String getId() {
@@ -98,12 +119,12 @@ public class User {
 		this.bookings = bookings;
 	}
 
-	public String getAccountType() {
-		return accountType;
+	public AccountRole getAccountRole() {
+		return accountRole;
 	}
 
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
+	public void setAccountRole(AccountRole accountType) {
+		this.accountRole = accountType;
 	}
 }
 

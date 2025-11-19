@@ -1,4 +1,4 @@
-package org.openjfx.EECS_3311_Project;
+package org.openjfx.EECS_3311_Project.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,6 +41,11 @@ public class Booking {
 	    this.checkInTime = checkInTime;
 	    this.status = Status.ACTIVE;
     }
+	
+	public String getId()
+	{
+		return this.id;
+	}
 
 	public String getRoomId() {
 		return roomId;

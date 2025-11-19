@@ -19,7 +19,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         //initialize the databases
-        UsersDatabaseUtils.initiliazeDBFolder();
+        DatabaseUtils.initializeDBFolder();
 
         //setting the first page we want the user to see
         scene = new Scene(loadFXML("SignIn"), 640, 480);

@@ -1,4 +1,4 @@
-package org.openjfx.EECS_3311_Project;
+package org.openjfx.EECS_3311_Project.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +10,8 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import org.openjfx.EECS_3311_Project.SceneManager;
 
 public class HomePageController implements Initializable {
 
@@ -54,7 +56,7 @@ public class HomePageController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
 
-                UsersDatabaseUtils.changeScene(event, "SignIn.fxml", "Sign In", null, null);
+                SceneManager.changeScene(event, "SignIn.fxml", "Sign In", null, null);
 
             }
         });
