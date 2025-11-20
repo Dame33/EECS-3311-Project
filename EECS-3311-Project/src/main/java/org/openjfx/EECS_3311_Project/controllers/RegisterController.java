@@ -75,57 +75,81 @@ public class RegisterController implements Initializable {
 
     public void registerUser(ActionEvent event) {
 
+        String firstName = tf_FirstName.getText();
+        String lastName = tf_LastName.getText();
+        String email = tf_email.getText();
         String password = pf_password.getText();
         String confirmPassword = pf_confirmPassword.getText();
-        boolean emailInUse = mediator.isEmailTaken(tf_email.getText()); // make sure icsv is defined somewhere
+        AccountRole role = comboBox.getValue();
+        // validation - req 7
 
-        if (tf_FirstName.getText().isBlank() || tf_LastName.getText().isBlank() ||
-                tf_email.getText().isBlank() || password.isBlank() || confirmPassword.isBlank() ||
-                comboBox.getValue() == null) {
+        boolean emailInUse = mediator.isEmailTaken(email);
 
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Registration Error");
-            alert.setHeaderText("All fields are mandatory");
-            alert.setContentText("Please ensure all fields are filled in");
-            alert.showAndWait();
+        if (firstName.isBlank() || lastName.isBlank() || email.isBlank() ||
+                password.isBlank() || confirmPassword.isBlank() || role == null) {
 
-        } else if (emailInUse) {
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Registration Error");
-            alert.setHeaderText("Email is already in use");
-            alert.setContentText("Please register using a new email or sign in instead");
-            alert.showAndWait();
-
-        } else if (!password.equals(confirmPassword)) {
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Registration Error");
-            alert.setHeaderText("Passwords do not match");
-            alert.setContentText("Passwords must match");
-            alert.showAndWait();
-
-        } else {
-
-            //System.out.println("Registering User");
-
-            User user = mediator.createAccount(
-                    password,
-                    tf_email.getText(),
-                    comboBox.getValue(),
-                    tf_FirstName.getText(),
-                    tf_LastName.getText(),
-                    "User"
-            );
-
-            if (user != null) {
-            	Session.setUser(user);
-                SceneManager.changeScene(event, "HomePage.fxml", "Home");
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Invalid credentials entered.");
-                alert.show();
-            }
+            showError("All fields are mandatory", 
+                      "Please ensure all fields are filled in.");
+            return;
         }
+
+        if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            showError("Invalid Email",
+                      "Please enter a valid email address.");
+            return;
+        }
+
+        if (emailInUse) {
+            showError("Email Already Registered",
+                      "Please use a different email or sign in.");
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            showError("Passwords Do Not Match",
+                      "Both password fields must match.");
+            return;
+        }
+
+        boolean strongPassword = password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$");
+
+        if (!strongPassword) {
+            showError("Weak Password",
+                      "Password must contain:\n" +
+                      "• At least 8 characters\n" +
+                      "• Uppercase letter\n" +
+                      "• Lowercase letter\n" +
+                      "• Number\n" +
+                      "• Symbol");
+            return;
+        }
+
+        User user = mediator.createAccount(
+                password,
+                email,
+                role,
+                firstName,
+                lastName,
+                "User"
+        );
+
+        if (user != null) {
+            Session.setUser(user);
+            SceneManager.changeScene(event, "HomePage.fxml", "Home");
+        } else {
+            showError("Registration Failed",
+                      "An unexpected error occurred. Try again.");
+        }
+        
+        // how tf do we 'verify' university accounts???
     }
+    
+	    private void showError(String header, String message) {
+	        Alert alert = new Alert(Alert.AlertType.ERROR);
+	        alert.setTitle("Registration Error");
+	        alert.setHeaderText(header);
+	        alert.setContentText(message);
+	        alert.showAndWait();
+	    }
+
 }
