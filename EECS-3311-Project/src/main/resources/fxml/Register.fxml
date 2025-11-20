@@ -6,35 +6,61 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <StackPane style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.EECS_3311_Project.controllers.RegisterController">
-	<children>
+    <children>
+        <AnchorPane fx:id="anchorPane_registerPage" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: white;">
+            <children>
+                <VBox spacing="10" alignment="CENTER" AnchorPane.topAnchor="100.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
 
-		<AnchorPane fx:id="anchorPane_registerPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;">
-			<children>
-				<Text layoutX="157.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
-				<TextField fx:id="tf_FirstName" layoutX="157.0" layoutY="77.0" />
-				<Text layoutX="325.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
-				<TextField fx:id="tf_LastName" layoutX="325.0" layoutY="77.0" />
-				<Text layoutX="157.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email Address" />
-				<TextField fx:id="tf_email" layoutX="157.0" layoutY="137.0" prefHeight="25.0" prefWidth="319.0" />
-				<Text layoutX="157.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Account Type" />
-				<ComboBox fx:id="comboBox" layoutX="156.0" layoutY="200.0" prefHeight="25.0" prefWidth="319.0" promptText="Select an Account Type" />
-				<Text layoutX="157.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
-				<Text layoutX="156.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Confirm Password" />
-				<Button fx:id="button_Register" layoutX="221.0" layoutY="360.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="169.0" style="-fx-background-color: #2680c0; -fx-cursor: hand;" text="Register" textFill="WHITE" />
-				<PasswordField fx:id="pf_password" layoutX="157.0" layoutY="262.0" prefHeight="25.0" prefWidth="319.0" />
-				<PasswordField fx:id="pf_confirmPassword" layoutX="157.0" layoutY="319.0" prefHeight="25.0" prefWidth="319.0" />
-            <Text layoutX="238.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="COMPANY LOGO HERE" />
-            <Text fill="RED" layoutX="215.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-            <Text fill="RED" layoutX="380.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-            <Text fill="RED" layoutX="232.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-            <Text fill="RED" layoutX="230.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-            <Text fill="RED" layoutX="208.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-            <Text fill="RED" layoutX="253.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*" />
-			</children>
-		</AnchorPane>
+					<ImageView fitWidth="300" fitHeight="300" pickOnBounds="true" preserveRatio="true">
+						<image>
+						    <Image url="@../images/logo.png"/>
+						</image>
+					</ImageView>
 
-	</children>
+                    <HBox spacing="10" prefWidth="250" maxWidth="250">
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Text text="First Name"/>
+                            <TextField fx:id="tf_FirstName" />
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS">
+                            <Text text="Last Name"/>
+                            <TextField fx:id="tf_LastName"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="5" prefWidth="250" maxWidth="250">
+                        <Text text="Email Address"/>
+                        <TextField fx:id="tf_email"/>
+                    </VBox>
+
+                    <VBox spacing="5" prefWidth="250" maxWidth="250">
+                        <Text text="Account Type"/>
+                        <ComboBox fx:id="comboBox" promptText="Select an Account Type"/>
+                    </VBox>
+
+                    <VBox spacing="5" prefWidth="250" maxWidth="250">
+                        <Text text="Password"/>
+                        <PasswordField fx:id="pf_password"/>
+                    </VBox>
+
+                    <VBox spacing="5" prefWidth="250" maxWidth="250">
+                        <Text text="Confirm Password"/>
+                        <PasswordField fx:id="pf_confirmPassword"/>
+                    </VBox>
+
+                    <HBox spacing="10" alignment="CENTER" prefWidth="250" maxWidth="250">
+                   		<Button fx:id="button_Back" text="Back" style="-fx-background-color: #2680c0; -fx-text-fill: white; -fx-cursor: hand;" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="button_Register" text="Register" style="-fx-background-color: #2680c0; -fx-text-fill: white; -fx-cursor: hand;" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </children>
 </StackPane>
