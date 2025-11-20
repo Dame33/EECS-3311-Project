@@ -161,7 +161,7 @@ public class CSVAdapter implements ICSVRepository{
             while ((line = br.readLine()) != null) {
                 if (line.isBlank()) continue;
                 
-                User user = getUser(line);
+                User user = getUserWithAccountRoleAndBookings(line);
                 // add account role
                 
                 if (user != null) {
@@ -176,7 +176,7 @@ public class CSVAdapter implements ICSVRepository{
         return users;
     }
     
-    private User getUser(String userCSV) { // uses a csv line to populate a user object with all dependencies 
+    private User getUserWithAccountRoleAndBookings(String userCSV) {
     	User user = new User(userCSV);
     	
     	String accountRoleRow = getAccountRoleRowById(user.getAccountRole().getId());
@@ -184,9 +184,16 @@ public class CSVAdapter implements ICSVRepository{
     	
     	user.setAccountRole(accountRole);
     	
-    	// populate user bookings here
-    	// user.setBookings(....)
+    	String user_id = user.getId();
+    	 	
+    	ArrayList<Booking> invitedBookings = getInvitedBookingsByUserId(user_id);
+    	ArrayList<Booking> hostBookings = getHostBookingsByUserId(user_id);
+
+    	ArrayList<Booking> allBookings = new ArrayList<>(invitedBookings);
+    	allBookings.addAll(invitedBookings);
+    	allBookings.addAll(hostBookings);
     	
+    	user.setBookings(allBookings);
     	return user;
     }
     
@@ -392,7 +399,7 @@ public class CSVAdapter implements ICSVRepository{
 
                     if (emailInFile.equalsIgnoreCase(cleanEmail) && passwordInFile.equals(password)) {
 
-                    	return getUser(line);
+                    	return getUserWithAccountRoleAndBookings(line);
                     }
                 }
             }
