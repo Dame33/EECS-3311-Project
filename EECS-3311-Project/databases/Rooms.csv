@@ -1,5 +1,4 @@
 1,Room 101,true,50,Building A
-2,Room 102,false,30,Building B
 3,Lab 1,true,20,Building C
 4,Conference Hall,true,100,Building A
 5,Auditorium,false,200,Building D
@@ -18,3 +17,4 @@
 18,Meeting Room 2,true,20,Building C
 19,Room 108,false,40,Building A
 20,Lecture Hall 2,true,150,Building D
+a44e4d1e-ce55-4887-b311-cb13fadf311e,test2,true,12,123

@@ -7,27 +7,27 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.openjfx.EECS_3311_Project.controllers.AdminToolsController">
 
-    <!-- Top: Add Room Button   onAction="#handleAddRoom"-->
-    <top>
-        <HBox spacing="10" style="-fx-padding: 10;">
-            <Button text="Add Room"/>
-        </HBox>
-    </top>
-
-    <!-- Center: Room Table -->
     <center>
-        <TableView fx:id="roomsTable" prefWidth="600" editable="true">
-            <columns>
+        <!-- Wrap both button and table in a VBox -->
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <!-- Top-left Add Room Button -->
+            <HBox alignment="TOP_LEFT">
+                <Button text="Add New Room" onAction="#handleAddRoom"/>
+            </HBox>
 
-                <TableColumn fx:id="colRoomName" text="Room Name" prefWidth="150"/>
-                <TableColumn fx:id="colBuildingName" text="Building" prefWidth="150"/>
-                <TableColumn fx:id="colCapacity" text="Capacity" prefWidth="100"/>
-                <TableColumn fx:id="colActive" text="Active" prefWidth="75"/>
-                <TableColumn fx:id="colEdit" text="Edit" prefWidth="60"/>
-                <TableColumn fx:id="colDelete" text="Delete" prefWidth="60"/>
-
-            </columns>
-        </TableView>
+            <!-- Centered Table -->
+            <HBox alignment="CENTER">
+                <TableView fx:id="roomsTable" editable="true">
+                    <columns>
+                        <TableColumn fx:id="colRoomName" text="Room Name"/>
+                        <TableColumn fx:id="colBuildingName" text="Building"/>
+                        <TableColumn fx:id="colCapacity" text="Capacity"/>
+                        <TableColumn fx:id="colActive" text="Active"/>
+                        <TableColumn fx:id="colEdit" text="Edit"/>
+                        <TableColumn fx:id="colDelete" text="Delete"/>
+                    </columns>
+                </TableView>
+            </HBox>
+        </VBox>
     </center>
-
 </BorderPane>

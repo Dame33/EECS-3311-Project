@@ -6,13 +6,14 @@
 <HBox xmlns="http://javafx.com/javafx/25"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.openjfx.EECS_3311_Project.controllers.NavbarController"
-      style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;">
+      style="-fx-background-color: white; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;"
+      stylesheets="@../styles/NavbarStyle.css">
     
-    <children>
-        <Button fx:id="button_mainMenu" text="Main Menu" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="button_Bookings" text="Bookings" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="button_CECTools" text="CEC Tools" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="button_AdminTools" text="Admin Tools" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="button_Logout" text="Logout" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-    </children>
+	<children>
+	    <Button fx:id="button_mainMenu" text="Main Menu" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
+	    <Button fx:id="button_Bookings" text="Bookings" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
+	    <Button fx:id="button_CECTools" text="CEC Tools" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
+	    <Button fx:id="button_AdminTools" text="Admin Tools" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
+	    <Button fx:id="button_Logout" text="Logout" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
+	</children>
 </HBox>

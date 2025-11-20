@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class User {
+public class User implements ICSVDataObject {
 	private String id;
 	private String firstName;
 	private String lastName;

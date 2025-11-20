@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -30,7 +31,7 @@ public class SceneManager {
 
           if (email != null && accountType != null) {
               if (loader.getController() instanceof HomePageController homePageController) {
-                  homePageController.setUserInfo(email, accountType);
+                  homePageController.setUserInfo(Session.getUser());
               }
           }
 
@@ -53,9 +54,21 @@ public class SceneManager {
           e.printStackTrace();
       }
 
+      //Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
       Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
       stage.setTitle(title);
-      stage.setScene(new Scene(root, 600, 400));
+      Image icon = new Image(SceneManager.class.getResourceAsStream("/images/logo.png"));
+      stage.getIcons().add(icon);
+      
+      Scene currentScene = stage.getScene();
+      if (currentScene == null) {
+          currentScene = new Scene(root);
+          stage.setScene(currentScene);
+      } else {
+          currentScene.setRoot(root);
+      }
+      
+      stage.setMaximized(true);
       stage.show();
   }
 

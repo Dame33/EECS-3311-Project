@@ -15,4 +15,16 @@ public class RoomManger {
 		return csvRepository.getAllRooms();
 	}
 
+
+
+	public Room upsertRoom(Room room) {
+		return csvRepository.upsertRoom(room);
+	}
+
+
+
+	public Room removeRoom(String roomId) {
+		return csvRepository.removeRoom(roomId);
+	}
+
 }

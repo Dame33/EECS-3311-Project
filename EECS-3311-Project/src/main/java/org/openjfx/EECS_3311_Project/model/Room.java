@@ -1,6 +1,8 @@
 package org.openjfx.EECS_3311_Project.model;
 
-public class Room {
+import java.util.UUID;
+
+public class Room implements ICSVDataObject{
 	private String roomId;
     private String buildingName;
     private String roomName;
@@ -16,6 +18,7 @@ public class Room {
         this.capacity = Integer.parseInt(tokens[3]);
         this.buildingName = tokens[4];
     }
+    
     
     public String getRoomId() {
 		return roomId;
@@ -64,4 +67,21 @@ public class Room {
         this.capacity= capacity;
         this.isActive = true;
     }
+	
+	public Room(String buildingName, String roomName, int capacity, boolean isActive) {
+		// no id
+		this.roomId = UUID.randomUUID().toString();
+        this.buildingName = buildingName;
+        this.roomName = roomName;
+        this.capacity= capacity;
+        this.isActive = true;
+    }
+
+
+	@Override
+	public String toCSVRow() {
+		//1,Room 101,true,50,Building A
+		// id, roomname,isactive,capactity,buildingname
+		return String.join(",", this.roomId, this.roomName, ""+this.isActive, ""+this.capacity, this.buildingName);
+	}
 }
