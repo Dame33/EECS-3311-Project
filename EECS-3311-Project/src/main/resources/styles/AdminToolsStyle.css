@@ -1,0 +1,68 @@
+
+.title {
+    -fx-font-size: 24px;    
+    -fx-font-weight: bold;            
+}
+
+.add-room-button {
+    -fx-font-size: 18px;    
+    -fx-background-color: #96e68e; 
+    -fx-text-fill: white;                
+	-fx-font-weight: bold;
+    -fx-background-radius: 5px;    
+    -fx-cursor: hand;               
+    -fx-padding: 10 15 10 15;         
+                
+}
+
+
+.button-no-bg {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-padding: 0;     
+}
+.button-no-bg:hover {
+    -fx-background-color: #e0e0e0; 
+}
+
+
+.table-view .table-row-cell {
+    -fx-background-color: transparent;
+}
+
+
+.table-view {
+    -fx-border-color: transparent;
+    
+}
+
+.table-view .table-cell {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-alignment: CENTER;
+    -fx-font-size: 26px;      
+    
+}
+
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: rgba(150, 150, 150, 0.1); /* light grey hover */
+}
+
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+
+.table-view .column-header, .table-view .column-header .label {
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-size: 28px;      
+}
+.table-view .table-row-cell:filled:selected, 
+.table-view .table-row-cell:filled:selected:focused {
+    -fx-background-color: #828282; 
+    -fx-text-fill: white; 
+}

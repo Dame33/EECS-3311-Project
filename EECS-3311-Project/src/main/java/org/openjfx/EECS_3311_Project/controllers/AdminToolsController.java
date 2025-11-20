@@ -178,8 +178,10 @@ public class AdminToolsController {
     private Callback<TableColumn<Room, Void>, TableCell<Room, Void>> createDeleteCellFactory() {
         return col -> new TableCell<>() {
             private final Button deleteButton = new Button("🗑");
+            
 
             {
+            	deleteButton.getStyleClass().add("button-no-bg");
                 deleteButton.setOnAction(e -> {
                     Room room = getTableView().getItems().get(getIndex());
 
@@ -225,7 +227,9 @@ public class AdminToolsController {
 
             {
             	
-            	
+            	editButton.getStyleClass().add("button-no-bg");
+            	saveButton.getStyleClass().add("button-no-bg");
+            	cancelButton.getStyleClass().add("button-no-bg");
                 editButton.setOnAction(e -> {
                     Room room = getTableView().getItems().get(getIndex());
 
@@ -258,6 +262,8 @@ public class AdminToolsController {
                     room.setRoomName(originalRoomName);
                     room.setBuildingName(originalBuildingName);
                     room.setCapacity(originalCapacity);
+                    
+                    roomsTable.refresh();
 
                     updateItem(getItem(), false);
                     disableEditing();
