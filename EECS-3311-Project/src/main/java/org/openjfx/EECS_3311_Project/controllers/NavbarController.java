@@ -58,7 +58,7 @@ public class NavbarController {
     }
 
     private void onMainMenuClicked(ActionEvent event) {
-        System.out.println("Main Menu clicked");
+    	SceneManager.changeScene(event, "HomePage.fxml", "Main Menu", null, null);
     }
 
     private void onBookingsClicked(ActionEvent event) {

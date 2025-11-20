@@ -31,4 +31,6 @@ public interface ICSVRepository {
 	boolean isEmailTaken(String text);
 	ArrayList<AccountRole> getAccountRoles();
 	ArrayList<Room> getAllRooms();
+	Room upsertRoom(Room room);
+	Room removeRoom(String roomId);
 }

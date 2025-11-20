@@ -53,6 +53,16 @@ public class Mediator {
 	public ArrayList<Room> getAllRooms() {
 		return roomManager.getAllRooms();
 	}
+
+	public Room upsertRoom(Room room) {
+		return roomManager.upsertRoom(room);
+		
+	}
+
+	public Room removeRoom(Room room) {
+		return roomManager.removeRoom(room.getRoomId());
+		
+	}
 	
 	
 

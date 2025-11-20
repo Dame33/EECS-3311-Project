@@ -1,6 +1,6 @@
 package org.openjfx.EECS_3311_Project.model;
 
-public class AccountRole {
+public class AccountRole implements ICSVDataObject{
 	
 	private String id;
 	private String roleName;
@@ -48,6 +48,11 @@ public class AccountRole {
 	@Override
 	public String toString() {
 		return roleName;
+	}
+	@Override
+	public String toCSVRow() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

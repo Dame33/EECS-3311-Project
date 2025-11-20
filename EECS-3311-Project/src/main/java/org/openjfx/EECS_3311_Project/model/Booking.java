@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Booking {
+public class Booking  implements ICSVDataObject{
 	private String id;
     private String roomId;
     private String name;
@@ -72,5 +72,11 @@ public class Booking {
         }
 		
 		return ids;
+	}
+
+	@Override
+	public String toCSVRow() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

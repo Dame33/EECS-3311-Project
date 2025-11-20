@@ -1,6 +1,6 @@
 package org.openjfx.EECS_3311_Project.model;
 
-public class Payment {
+public class Payment  implements ICSVDataObject{
 	private String id;
     private Double amount;
     private String lastDigitsOfCard;
@@ -12,4 +12,10 @@ public class Payment {
         this.lastDigitsOfCard = lastDigitsOfCard;
         this.userId= userId;
     }
+
+	@Override
+	public String toCSVRow() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -6,6 +6,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
@@ -459,7 +460,7 @@ public class CSVAdapter implements ICSVRepository{
 		        try {
 		            ArrayList<String> lines = new ArrayList<>(Files.readAllLines(Path.of(DatabaseUtils.roomsFilePath.toString())));
 
-		            for (int i = 1; i < lines.size(); i++) {
+		            for (int i = 0; i < lines.size(); i++) {
 		                String line = lines.get(i);
 		                Room room = new Room(line); 
 		                rooms.add(room);
@@ -470,6 +471,103 @@ public class CSVAdapter implements ICSVRepository{
 
 		        return rooms;
 		    
+	}
+
+
+
+
+
+
+	@Override
+	public Room upsertRoom(Room room) {
+		 try {
+			 	System.out.println("upserting room: " + room.toCSVRow());
+		        List<String> lines = new ArrayList<>();
+
+		        if (Files.exists(DatabaseUtils.roomsFilePath)) {
+		            lines = Files.readAllLines(DatabaseUtils.roomsFilePath);
+		        }
+
+		        String targetId = room.getRoomId();
+		        boolean updated = false;
+
+		        // find row with the same id
+		        for (int i = 0; i < lines.size(); i++) {
+		            String[] parts = lines.get(i).split(",");
+
+		            if (parts.length > 0 && parts[0].equals(targetId)) {
+		            	System.out.println("going to update!");
+		                // update if found
+		                lines.set(i, room.toCSVRow());
+		                updated = true;
+		                break;
+		            }
+		        }
+
+		        // insert if this is not an update
+		        if (!updated) {
+		            lines.add(room.toCSVRow());
+	            	System.out.println("going to insert!");
+
+		        }
+
+		        // we need to rewrite the whole file for an update :/
+		        Files.write(
+		        	DatabaseUtils.roomsFilePath,
+		            lines,
+		            StandardOpenOption.CREATE,
+		            StandardOpenOption.TRUNCATE_EXISTING
+		        );
+
+		        return room;
+
+		    } catch (IOException ex) {
+		        ex.printStackTrace();
+		        return null;
+		    }
+	}
+
+
+
+
+
+
+	@Override
+	public Room removeRoom(String roomId) {
+	    try {
+	        if (!Files.exists(DatabaseUtils.roomsFilePath)) {
+	            return null; //no db
+	        }
+
+	        List<String> lines = Files.readAllLines(DatabaseUtils.roomsFilePath);
+	        Room removedRoom = null;
+
+	        // find room to remove
+	        for (int i = 0; i < lines.size(); i++) {
+	            String[] parts = lines.get(i).split(",");
+	            if (parts.length > 0 && parts[0].equals(roomId)) {
+	                removedRoom = new Room(lines.get(i)); // get room that is being removed
+	                lines.remove(i);
+	                break;
+	            }
+	        }
+
+	        // rewrite the csv without the line we are removing
+	        Files.write(
+	            DatabaseUtils.roomsFilePath,
+	            lines,
+	            StandardOpenOption.CREATE,
+	            StandardOpenOption.TRUNCATE_EXISTING
+	        );
+	        
+	        System.out.println("removed " + removedRoom.getRoomName());
+
+	        return removedRoom;
+
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	        return null;
+	    }
 	}
 
 }
