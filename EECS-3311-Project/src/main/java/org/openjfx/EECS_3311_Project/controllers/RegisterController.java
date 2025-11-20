@@ -2,6 +2,7 @@ package org.openjfx.EECS_3311_Project.controllers;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.openjfx.EECS_3311_Project.Mediator;
@@ -36,6 +37,11 @@ public class RegisterController implements Initializable {
     @FXML private PasswordField pf_confirmPassword;
     @FXML private Button button_Register;
     @FXML private Button button_Back;
+    
+    private static final List<String> UNIVERSITY_DOMAINS = List.of(
+    	    "@yorku.ca",
+    	    "@my.yorku.ca"
+    	);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -81,38 +87,37 @@ public class RegisterController implements Initializable {
         String password = pf_password.getText();
         String confirmPassword = pf_confirmPassword.getText();
         AccountRole role = comboBox.getValue();
-        // validation - req 7
 
         boolean emailInUse = mediator.isEmailTaken(email);
 
         if (firstName.isBlank() || lastName.isBlank() || email.isBlank() ||
                 password.isBlank() || confirmPassword.isBlank() || role == null) {
-
             showError("All fields are mandatory", 
                       "Please ensure all fields are filled in.");
             return;
         }
 
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            showError("Invalid Email",
-                      "Please enter a valid email address.");
+            showError("Invalid Email", "Please enter a valid email address.");
+            return;
+        }
+
+        if (!isUniversityEmail(email)) {
+            showError("University Email Required","Please register using a valid university email address.");
             return;
         }
 
         if (emailInUse) {
-            showError("Email Already Registered",
-                      "Please use a different email or sign in.");
+            showError("Email Already Registered", "Please use a different email or sign in.");
             return;
         }
 
         if (!password.equals(confirmPassword)) {
-            showError("Passwords Do Not Match",
-                      "Both password fields must match.");
+            showError("Passwords Do Not Match", "Both password fields must match.");
             return;
         }
 
         boolean strongPassword = password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$");
-
         if (!strongPassword) {
             showError("Weak Password",
                       "Password must contain:\n" +
@@ -140,8 +145,10 @@ public class RegisterController implements Initializable {
             showError("Registration Failed",
                       "An unexpected error occurred. Try again.");
         }
-        
-        // how tf do we 'verify' university accounts???
+    }
+    
+    private boolean isUniversityEmail(String email) {
+        return UNIVERSITY_DOMAINS.stream().anyMatch(email::endsWith);
     }
     
 	    private void showError(String header, String message) {
