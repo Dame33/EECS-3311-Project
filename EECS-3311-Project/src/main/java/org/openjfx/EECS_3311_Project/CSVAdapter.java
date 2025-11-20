@@ -30,8 +30,6 @@ public class CSVAdapter implements ICSVRepository{
 //    private final String bookingDB = "BookingDB.csv";
 
 	
-	
-
 
 
     public Booking upsertBooking(Booking booking) {
@@ -60,7 +58,7 @@ public class CSVAdapter implements ICSVRepository{
     public ArrayList<Booking> getHostBookingsByUserId(String userId) {
         ArrayList<Booking> result = new ArrayList<>();
         for (Booking b : getAllBookingsFromFile()) {
-            if (b.getHostUserId().equals(userId)) {
+            if (b.getHost().equals(userId)) {
                 result.add(b);
             }
         }
@@ -108,28 +106,23 @@ public class CSVAdapter implements ICSVRepository{
     }
 
     private Booking parseBooking(String line) {
-        String[] parts = line.split(",", -1);
-
-        if (parts.length < 10) {
-            throw new IllegalArgumentException("Invalid booking CSV line: " + line);
-        }
-
-        String id = parts[0];
-        String roomId = parts[1];
-        String name = parts[2];
-        Boolean isCheckedIn = Boolean.parseBoolean(parts[3]);        
-        String hostUserId = parts[4];
-        String[] attendeeIds = parts[5].split(";");
-        LocalDateTime startTime  = LocalDateTime.parse(parts[6]);
-        LocalDateTime endTime = LocalDateTime.parse(parts[7]);
-        LocalDateTime checkInTime = LocalDateTime.parse(parts[8]);
-        Status status = Status.valueOf(parts[9]);
-        
-        User host = getUserById(hostUserId);
-        ArrayList<User> attendees = getUsersByIds(attendeeIds);
-        
-        return new Booking(id, roomId, name, isCheckedIn, host, attendees, startTime, endTime, checkInTime, status);
+       Booking booking = new Booking(line);
+       booking.setHost(getUserById(booking.getHost().getId()));
+       
+       ArrayList<String> invitedppl = booking.getInvitedUserIds();
+       ArrayList<User> attendees = new ArrayList<>();
+       for(String userId: invitedppl) {
+    	   User attendee = getUserById(userId);
+    	   if(attendee != null) {
+    		   attendees.add(attendee);
+    	   }
+       }
+       booking.setAttendees(attendees);
+       
+       return booking;
     }
+    
+    
     
     public User getUserById(String userId) {
         ArrayList<User> allUsers = getAllUsers();  // read from CSV

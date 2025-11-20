@@ -53,6 +53,12 @@ public class User implements ICSVDataObject {
 		this.userType = userType;
 		this.accountRole = accountType;
 	}
+	
+	public User()
+	{
+		
+	}
+	
 	public User(String userCSVRow) {
 		String[] parts = userCSVRow.split(",", -1);
 		
@@ -158,6 +164,8 @@ public class User implements ICSVDataObject {
 	public void setAccountRole(AccountRole accountType) {
 		this.accountRole = accountType;
 	}
+	
+	
 }
 
 
