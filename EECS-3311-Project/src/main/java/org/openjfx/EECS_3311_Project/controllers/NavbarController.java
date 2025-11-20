@@ -58,7 +58,7 @@ public class NavbarController {
     }
 
     private void onMainMenuClicked(ActionEvent event) {
-    	SceneManager.changeScene(event, "HomePage.fxml", "Main Menu", null, null);
+    	SceneManager.changeScene(event, "HomePage.fxml", "Main Menu");
     }
 
     private void onBookingsClicked(ActionEvent event) {
@@ -70,11 +70,11 @@ public class NavbarController {
     }
 
     private void onAdminToolsClicked(ActionEvent event) {
-    	SceneManager.changeScene(event, "AdminTools.fxml", "Admin Tools", null, null);
+    	SceneManager.changeScene(event, "AdminTools.fxml", "Admin Tools");
     }
 
     private void onLogoutClicked(ActionEvent event) {
-     SceneManager.changeScene(event, "SignIn.fxml", "Sign In", null, null);
+     SceneManager.changeScene(event, "SignIn.fxml", "Sign In");
      Session.setUser(null);
 
     }

@@ -24,7 +24,6 @@ public class HomePageController implements Initializable {
     private Text text_email;
     @FXML
     private Text text_accountType;
-
     @FXML
     private Text text_name;         
     @FXML
@@ -38,17 +37,17 @@ public class HomePageController implements Initializable {
     }
 
     public void setUserInfo(User user) {
-        text_email.setText("Email: " + user.getEmail());
-        text_accountType.setText("Account Type: " + user.getUserType());
+        text_name.setText(user.getFirstName() + " " + user.getLastName());
+        text_email.setText(user.getEmail());
+        text_accountType.setText(user.getUserType());
 
-        // New fields
-        text_name.setText("Name: " + user.getFirstName() + " " + user.getLastName());
         if (user.getAccountRole() != null) {
-            text_accountRole.setText("Account Role: " + user.getAccountRole().getRoleName());
-            text_hourlyRate.setText("Hourly Rate: $" + user.getAccountRole().getHourlyRate());
+            text_accountRole.setText(user.getAccountRole().getRoleName());
+            text_hourlyRate.setText("$" + user.getAccountRole().getHourlyRate());
         } else {
-            text_accountRole.setText("Account Role: N/A");
-            text_hourlyRate.setText("Hourly Rate: N/A");
+            text_accountRole.setText("N/A");
+            text_hourlyRate.setText("N/A");
         }
     }
 }
+

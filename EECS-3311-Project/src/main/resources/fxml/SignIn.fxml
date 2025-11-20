@@ -15,7 +15,7 @@
 
         <VBox spacing="20" alignment="CENTER" prefWidth="600" prefHeight="400" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
 
-            <ImageView fitWidth="200" fitHeight="200" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitWidth="300" fitHeight="300" pickOnBounds="true" preserveRatio="true">
                 <image>
                     <Image url="@../images/logo.png"/>
                 </image>

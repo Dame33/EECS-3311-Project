@@ -8,30 +8,56 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.openjfx.EECS_3311_Project.controllers.HomePageController">
+            fx:controller="org.openjfx.EECS_3311_Project.controllers.HomePageController"
+            stylesheets="@../styles/HomePageStyle.css">
 
     <center>
-        <AnchorPane style="-fx-background-color: white;">
+        <HBox spacing="50" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 50;">
+            
+            <VBox spacing="20" alignment="CENTER">
+                <ImageView fx:id="image_profile" fitHeight="200.0" fitWidth="200.0"
+                           pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/Default_pfp.jpg"/>
+                    </image>
+                </ImageView>
+                
+               <VBox spacing="10" alignment="TOP_LEFT">
+			   <HBox spacing="5" alignment="CENTER_LEFT">
+			        <Label text="Name:"  styleClass="field-label"/>
+			        <Text fx:id="text_name"/>
+			    </HBox>
+			
+			    <HBox spacing="5" alignment="CENTER_LEFT">
+			        <Label text="Email:" styleClass="field-label"/>
+			        <Text fx:id="text_email"/>
+			    </HBox>
+			
+			    <HBox spacing="5" alignment="CENTER_LEFT">
+			        <Label text="Account Type:" styleClass="field-label"/>
+			        <Text fx:id="text_accountType"/>
+			    </HBox>
+			
+			    <HBox spacing="5" alignment="CENTER_LEFT">
+			        <Label text="Account Role:" styleClass="field-label" />
+			        <Text fx:id="text_accountRole"/>
+			    </HBox>
+			
+			    <HBox spacing="5" alignment="CENTER_LEFT">
+			        <Label text="Hourly Rate:" styleClass="field-label"/>
+			        <Text fx:id="text_hourlyRate"/>
+			    </HBox>
+				</VBox>
 
-            <ImageView fx:id="image_profile" fitHeight="150.0" fitWidth="150.0"
-                       layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@../images/Default_pfp.jpg"/>
-                </image>
-            </ImageView>
-
-            <VBox layoutX="200.0" layoutY="30.0" spacing="10">
-                <Text fx:id="text_name" text="Name: "/>
-                <Text fx:id="text_email" text="Email: "/>
-                <Text fx:id="text_accountType" text="Account Type: "/>
-                <Text fx:id="text_accountRole" text="Account Role: "/>
-                <Text fx:id="text_hourlyRate" text="Hourly Rate: "/>
+                
             </VBox>
 
-            <VBox layoutX="450.0" layoutY="30.0" spacing="5">
+            <VBox spacing="10" alignment="CENTER">
                 <Text text="Upcoming Bookings" />
                 <Accordion fx:id="accordion_bookings" prefWidth="250.0" prefHeight="300.0">
                     <panes>
@@ -54,7 +80,9 @@
                 </Accordion>
             </VBox>
 
-        </AnchorPane>
+        </HBox>
     </center>
 
 </BorderPane>
+
+

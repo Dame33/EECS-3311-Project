@@ -35,6 +35,7 @@ public class RegisterController implements Initializable {
     @FXML private PasswordField pf_password;
     @FXML private PasswordField pf_confirmPassword;
     @FXML private Button button_Register;
+    @FXML private Button button_Back;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -69,6 +70,7 @@ public class RegisterController implements Initializable {
         comboBox.getItems().addAll(accountRoles);
 
         button_Register.setOnAction(event -> registerUser(event));
+        button_Back.setOnAction(event -> SceneManager.changeScene(event, "SignIn.fxml", "Sign In"));
     }
 
     public void registerUser(ActionEvent event) {
@@ -118,7 +120,7 @@ public class RegisterController implements Initializable {
 
             if (user != null) {
             	Session.setUser(user);
-                SceneManager.changeScene(event, "HomePage.fxml", "Home", user.getEmail(), user.getAccountRole().getRoleName());
+                SceneManager.changeScene(event, "HomePage.fxml", "Home");
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Invalid credentials entered.");
