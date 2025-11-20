@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Booking  implements ICSVDataObject{
+public class Booking {
 	private String id;
     private String roomId;
     private String name;
@@ -42,9 +42,8 @@ public class Booking  implements ICSVDataObject{
 	    this.status = Status.ACTIVE;
     }
 	
-	public String getId()
-	{
-		return this.id;
+	public String getId() {
+		return id;
 	}
 
 	public String getRoomId() {
@@ -73,10 +72,47 @@ public class Booking  implements ICSVDataObject{
 		
 		return ids;
 	}
-
-	@Override
-	public String toCSVRow() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public Status getStatus() {
+	    return status;
 	}
+
+	public void setStatus(Status status) {
+	    this.status = status;
+	}
+	
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+	
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime= startTime;
+	}
+	
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+	
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime= endTime;
+	}
+	
+	public LocalDateTime getCheckIn() {
+		return checkInTime;
+	}
+	
+	public void setCheckIn(LocalDateTime checkInTime) {
+		this.checkInTime= checkInTime;
+	}
+	
+	public ArrayList<User> getAttendees() {
+	    return attendees;
+	}
+
+	public void setAttendees(ArrayList<User> attendees) {
+	    this.attendees = attendees;
+	}
+	
+	
 }
+
