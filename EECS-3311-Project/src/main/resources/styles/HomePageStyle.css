@@ -1,0 +1,29 @@
+
+.text {
+    -fx-text-alignment: left;
+}
+
+
+#text_name,
+#text_email,
+#text_accountType,
+#text_accountRole,
+#text_hourlyRate {
+    -fx-font-size: 26px;
+    -fx-text-alignment: left;
+}
+
+VBox > Text {
+    -fx-font-size: 22px;
+    -fx-text-alignment: left;
+}
+
+
+.accordion .title {
+	-fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+.field-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 24px;
+}

@@ -25,12 +25,12 @@ public class App extends Application {
         DatabaseUtils.initializeDBFolder();
 
         //setting the first page we want the user to see
-        scene = new Scene(loadFXML("SignIn"), 640, 480);
+        scene = new Scene(loadFXML("SignIn"));
         stage.setScene(scene);
         Image icon = new Image(SceneManager.class.getResourceAsStream("/images/logo.png"));
         stage.getIcons().add(icon);
         stage.show();
-        
+        stage.setMaximized(true);
 
     }
 

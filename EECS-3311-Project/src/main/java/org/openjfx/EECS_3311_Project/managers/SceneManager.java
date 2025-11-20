@@ -21,19 +21,14 @@ import javafx.stage.Stage;
 public class SceneManager {
 
 	
-  public static void changeScene(ActionEvent event, String fxmlFile, String title, String email, String accountType)
+  public static void changeScene(ActionEvent event, String fxmlFile, String title)
   {
+	  
       Parent root = null;
 
       try {
           FXMLLoader loader = new FXMLLoader(SceneManager.class.getResource("/fxml/" + fxmlFile));
           root = loader.load();
-
-          if (email != null && accountType != null) {
-              if (loader.getController() instanceof HomePageController homePageController) {
-                  homePageController.setUserInfo(Session.getUser());
-              }
-          }
 
           //add the nav bar to every page except the sign in and register pages
           if (!fxmlFile.equals("SignIn.fxml") && !fxmlFile.equals("Register.fxml")) {
@@ -68,8 +63,9 @@ public class SceneManager {
           currentScene.setRoot(root);
       }
       
-      stage.setMaximized(true);
       stage.show();
+      stage.setMaximized(true);
+      
   }
 
 }

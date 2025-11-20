@@ -72,7 +72,7 @@ public class SignInController implements Initializable {
                 
                 if (user != null) {
                 	Session.setUser(user);
-                    SceneManager.changeScene(event, "HomePage.fxml", "Home", user.getEmail(), user.getAccountRole().getRoleName());
+                    SceneManager.changeScene(event, "HomePage.fxml", "Home");
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setContentText("Invalid credentials entered.");
@@ -87,7 +87,7 @@ public class SignInController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
 
-            	SceneManager.changeScene(event, "Register.fxml", "Register", null, null);
+            	SceneManager.changeScene(event, "Register.fxml", "Register");
             }
         });
 
