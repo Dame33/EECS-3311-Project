@@ -11,7 +11,7 @@
     
 	<children>
 	    <Button fx:id="button_mainMenu" text="Main Menu" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
-	    <Button fx:id="button_Bookings" text="Bookings" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
+	    <Button fx:id="button_Bookings" text="Book a Room" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
 	    <Button fx:id="button_CECTools" text="CEC Tools" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
 	    <Button fx:id="button_AdminTools" text="Admin Tools" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>
 	    <Button fx:id="button_Logout" text="Logout" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="nav-button"/>

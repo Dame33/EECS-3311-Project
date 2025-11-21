@@ -4,6 +4,7 @@ import javafx.scene.control.Alert;
 
 import java.io.*;
 import java.nio.file.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class CSVAdapter implements ICSVRepository{
     public ArrayList<Booking> getHostBookingsByUserId(String userId) {
         ArrayList<Booking> result = new ArrayList<>();
         for (Booking b : getAllBookingsFromFile()) {
-            if (b.getHost().equals(userId)) {
+            if (b.getHostId().equals(userId)) {
                 result.add(b);
             }
         }
@@ -68,7 +69,7 @@ public class CSVAdapter implements ICSVRepository{
     public ArrayList<Booking> getInvitedBookingsByUserId(String userId) {
         ArrayList<Booking> result = new ArrayList<>();
         for (Booking b : getAllBookingsFromFile()) {
-            if (b.getInvitedUserIds().contains(userId)) {
+            if (b.getAttendeeIds().contains(userId)) {
                 result.add(b);
             }
         }
@@ -85,7 +86,7 @@ public class CSVAdapter implements ICSVRepository{
         try (BufferedReader reader = Files.newBufferedReader(DatabaseUtils.bookingFilePath)) {
             String line;
             while ((line = reader.readLine()) != null) {
-                Booking b = parseBooking(line);
+                Booking b = new Booking(line);
                 bookings.add(b);
             }
         } catch (IOException e) {
@@ -105,22 +106,22 @@ public class CSVAdapter implements ICSVRepository{
         }
     }
 
-    private Booking parseBooking(String line) {
-       Booking booking = new Booking(line);
-       booking.setHost(getUserById(booking.getHost().getId()));
-       
-       ArrayList<String> invitedppl = booking.getInvitedUserIds();
-       ArrayList<User> attendees = new ArrayList<>();
-       for(String userId: invitedppl) {
-    	   User attendee = getUserById(userId);
-    	   if(attendee != null) {
-    		   attendees.add(attendee);
-    	   }
-       }
-       booking.setAttendees(attendees);
-       
-       return booking;
-    }
+//    private Booking parseBooking(String line) {
+//       Booking booking = new Booking(line);
+//       booking.setHost(getUserById(booking.getHost().getId()));
+//       
+//       ArrayList<String> invitedppl = booking.getInvitedUserIds();
+//       ArrayList<User> attendees = new ArrayList<>();
+//       for(String userId: invitedppl) {
+//    	   User attendee = getUserById(userId);
+//    	   if(attendee != null) {
+//    		   attendees.add(attendee);
+//    	   }
+//       }
+//       booking.setAttendeeIds(attendees);
+//       
+//       return booking;
+//    }
     
     
     
@@ -181,18 +182,17 @@ public class CSVAdapter implements ICSVRepository{
     	
     	String accountRoleRow = getAccountRoleRowById(user.getAccountRole().getId());
     	AccountRole accountRole = new AccountRole(accountRoleRow);
-    	
     	user.setAccountRole(accountRole);
     	
-    	String user_id = user.getId();
+    	String user_id = user.getId(); 
     	 	
-    	ArrayList<Booking> invitedBookings = getInvitedBookingsByUserId(user_id);
+    	//ArrayList<Booking> invitedBookings = getInvitedBookingsByUserId(user_id);
     	ArrayList<Booking> hostBookings = getHostBookingsByUserId(user_id);
 
-    	ArrayList<Booking> allBookings = new ArrayList<>(invitedBookings);
-    	allBookings.addAll(hostBookings);
+    	//ArrayList<Booking> allBookings = new ArrayList<>(invitedBookings);
+    	//allBookings.addAll(hostBookings);
     	
-    	user.setBookings(allBookings);
+    	user.setBookings(hostBookings); // we only need the user's hosted bookings
     	return user;
     }
     
@@ -568,5 +568,45 @@ public class CSVAdapter implements ICSVRepository{
 	        return null;
 	    }
 	}
+
+
+
+
+	@Override
+	public ArrayList<Booking> getBookingsByRoomAndDate(String roomId, LocalDate date) {
+	    ArrayList<Booking> bookings = new ArrayList<>();
+	    Path path = DatabaseUtils.bookingFilePath;
+
+	    if (!Files.exists(path)) {
+	        return bookings; // return empty list if file doesn't exist
+	    }
+
+	    try (BufferedReader br = Files.newBufferedReader(path)) {
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            if (line.isBlank()) continue; // skip empty lines
+	            Booking booking;
+	            try {
+	                booking = new Booking(line);
+	            } catch (Exception ex) {
+	                System.err.println("Failed to parse booking: " + line);
+	                continue; // skip invalid rows
+	            }
+
+	            if (booking.getRoomId().equals(roomId) &&
+	                !booking.getEndTime().toLocalDate().isBefore(date) &&
+	                !booking.getStartTime().toLocalDate().isAfter(date)) {
+	                // the booking occurs on the given date
+	                bookings.add(booking);
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return bookings;
+	}
+
+
 
 }

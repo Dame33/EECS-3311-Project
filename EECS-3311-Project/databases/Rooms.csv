@@ -1,20 +1,20 @@
-1,Room 101,true,50,Building A
-3,Lab 1,true,20,Building C
-4,Conference Hall,false,100,Building A
-5,Auditorium,false,200,Building D
-6,Room 103,true,45,Building B
-7,Lab 2,true,25,Building C
-8,Meeting Room 1,true,15,Building A
-9,Room 104,false,35,Building B
-10,Lecture Hall 1,true,120,Building D
-11,Room 105,true,40,Building C
-12,Seminar Room,true,30,Building A
-13,Room 106,false,50,Building B
-14,Lab 3,true,20,Building C
-15,Conference Hall 2,true,90,Building D
-16,Auditorium 2,false,180,Building A
-17,Room 107,true,60,Building B
-18,Meeting Room 2,true,20,Building C
-19,Room 108,false,40,Building A
-20,Lecture Hall 2,true,150,Building D
-a44e4d1e-ce55-4887-b311-cb13fadf311e,test2,true,12,123
+ROOM1,Room 101,true,50,Building A
+ROOM2,Room 102,true,50,Building A
+ROOM3,Lab 1,true,20,Building C
+ROOM4,Conference Hall,false,100,Building A
+ROOM5,Auditorium,false,200,Building D
+ROOM6,Room 103,true,45,Building B
+ROOM7,Lab 2,true,25,Building C
+ROOM8,Meeting Room 1,true,15,Building A
+ROOM9,Room 104,false,35,Building B
+ROOM10,Lecture Hall 1,true,120,Building D
+ROOM11,Room 105,true,40,Building C
+ROOM12,Seminar Room,true,30,Building A
+ROOM13,Room 106,false,50,Building B
+ROOM14,Lab 3,true,20,Building C
+ROOM15,Conference Hall 2,true,90,Building D
+ROOM16,Auditorium 2,false,180,Building A
+ROOM17,Room 107,true,60,Building B
+ROOM18,Meeting Room 2,true,20,Building C
+ROOM19,Room 108,false,40,Building A
+ROOM20,Lecture Hall 2,true,150,Building D

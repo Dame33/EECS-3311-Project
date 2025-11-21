@@ -62,6 +62,7 @@ public class NavbarController {
     }
 
     private void onBookingsClicked(ActionEvent event) {
+    	SceneManager.changeScene(event, "BookARoom.fxml", "Book a Room");
         System.out.println("Bookings clicked");
     }
 

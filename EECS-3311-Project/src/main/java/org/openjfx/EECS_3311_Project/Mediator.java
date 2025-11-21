@@ -1,10 +1,13 @@
 package org.openjfx.EECS_3311_Project;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.openjfx.EECS_3311_Project.managers.BookingManager;
 import org.openjfx.EECS_3311_Project.managers.UserManager;
 import org.openjfx.EECS_3311_Project.model.AccountRole;
+import org.openjfx.EECS_3311_Project.model.Booking;
 import org.openjfx.EECS_3311_Project.model.Room;
 import org.openjfx.EECS_3311_Project.model.User;
 
@@ -16,7 +19,7 @@ public class Mediator {
     private static Mediator instance;
 //
 //    private Session session;
-//    private final BookingManager bookingManager;
+   private final BookingManager bookingManager = new BookingManager();
     // private final RoomManager roomManager;
      private final UserManager userManager = new UserManager();
      private final RoomManger roomManager = new RoomManger();
@@ -62,6 +65,10 @@ public class Mediator {
 	public Room removeRoom(Room room) {
 		return roomManager.removeRoom(room.getRoomId());
 		
+	}
+
+	public ArrayList<Booking> getBookingsByRoomAndDate(String roomId, LocalDate date) {
+		return bookingManager.getBookingsByRoomAndDate(roomId,  date);
 	}
 	
 	

@@ -3,29 +3,30 @@ package org.openjfx.EECS_3311_Project.managers;
 import java.util.List;
 import java.util.Optional;
 
+import org.openjfx.EECS_3311_Project.CSVAdapter;
 import org.openjfx.EECS_3311_Project.ICSVRepository;
+import org.openjfx.EECS_3311_Project.Session;
 import org.openjfx.EECS_3311_Project.model.Booking;
 import org.openjfx.EECS_3311_Project.model.Status;
 import org.openjfx.EECS_3311_Project.model.User;
 
 import java.time.LocalDateTime;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BookingManager {
 
-	private final ICSVRepository csv;
-	private final String currentUserID;
+	private final ICSVRepository csv = CSVAdapter.getInstance();
 	
-	public BookingManager(ICSVRepository csv, String currentUserID) {
-		this.csv = csv;
-		this.currentUserID = currentUserID;
+	
+	public BookingManager() {
 	}
-	
-	
+
+
 	public Booking checkInBooking(String bookingID) {
-		Booking booking = findBookingByID(bookingID);
+		Booking booking = findBookingByID(bookingID, Session.getUser().getId());
 		if (booking == null) {
 			return null;
 		}
@@ -36,7 +37,7 @@ public class BookingManager {
 	}
 	
 	public Booking cancelBooking(String bookingID) {
-		Booking booking = findBookingByID(bookingID);
+		Booking booking = findBookingByID(bookingID, Session.getUser().getId());
 		if (booking == null) {
 			return null;
 		}
@@ -48,7 +49,7 @@ public class BookingManager {
 	
 	
 	public Booking addTime(String bookingID, int minutes) {
-		Booking booking = findBookingByID(bookingID);
+		Booking booking = findBookingByID(bookingID, Session.getUser().getId());
 		if (booking == null) {
 			return null;
 		}
@@ -60,7 +61,7 @@ public class BookingManager {
 	}
 	
 	public Booking saveBooking(String bookingID) {
-		Booking booking = findBookingByID(bookingID);
+		Booking booking = findBookingByID(bookingID, Session.getUser().getId());
 		return csv.upsertBooking(booking);
 	}
 	
@@ -70,7 +71,7 @@ public class BookingManager {
 			return;
 		}
 		
-		ArrayList<User> attendees = booking.getAttendees();
+		ArrayList<String> attendees = (ArrayList) booking.getAttendeeIds();
 		if (attendees == null) {
 			attendees = new ArrayList<>();
 		}
@@ -82,40 +83,40 @@ public class BookingManager {
 			
 			boolean Invited = false;
 			
-			for(User x : attendees) {
-				if (x.getId().equals(user.getId())) {
+			for(String x : attendees) {
+				if (x.equals(user.getId())) {
 					Invited = true;
 					break;
 				}
 			}
 			
 			if(Invited == false) {
-				attendees.add(user);
+				attendees.add(user.getId());
 			}
 		}
-		booking.setAttendees(attendees);
+		booking.setAttendeeIds(attendees);
 	}
 	
 	
 	//double check formatting of booking, this should be based off how 
-	public Booking bookRoom(String roomId, LocalDateTime startTime, LocalDateTime endTime, String bookingName, User host, ArrayList<User> attendees) {
+	public Booking bookRoom(String roomId, LocalDateTime startTime, LocalDateTime endTime, String bookingName, User host, ArrayList<String> attendees) {
 		if(attendees == null) {
 			attendees = new ArrayList<>();
 		}
-		Booking booking = new Booking(roomId, bookingName, false, host, attendees, startTime, endTime, null);
+		Booking booking = new Booking(roomId, bookingName, false, host.getId(), attendees, startTime, endTime, null);
 		return csv.upsertBooking(booking);
 	}
 	
 	
 	
 	//Helper to find booking, should i move this somewhere else?
-	private Booking findBookingByID(String bookingID) {
-		if(bookingID.length() < 1 || currentUserID == null) {
+	private Booking findBookingByID(String bookingID, String userId) {
+		if(bookingID.length() < 1 || userId == null) {
 			return null;
 		}
 		
-		ArrayList<Booking> hostBookings = csv.getHostBookingsByUserId(currentUserID);
-		ArrayList<Booking> invitedBookings = csv.getInvitedBookingsByUserId(currentUserID);
+		ArrayList<Booking> hostBookings = csv.getHostBookingsByUserId(userId);
+		ArrayList<Booking> invitedBookings = csv.getInvitedBookingsByUserId(userId);
 		
 		ArrayList<Booking> temp = new ArrayList<>();
 		temp.addAll(hostBookings);
@@ -127,5 +128,10 @@ public class BookingManager {
 			}
 		}
 		return null;
+	}
+
+
+	public ArrayList<Booking> getBookingsByRoomAndDate(String roomId, LocalDate date) {
+		return csv.getBookingsByRoomAndDate(roomId, date);
 	}
 }

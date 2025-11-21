@@ -1,6 +1,8 @@
 package org.openjfx.EECS_3311_Project;
 
 import javafx.event.ActionEvent;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import org.openjfx.EECS_3311_Project.model.AccountRole;
@@ -33,4 +35,5 @@ public interface ICSVRepository {
 	ArrayList<Room> getAllRooms();
 	Room upsertRoom(Room room);
 	Room removeRoom(String roomId);
+	ArrayList<Booking> getBookingsByRoomAndDate(String roomId, LocalDate date);
 }
