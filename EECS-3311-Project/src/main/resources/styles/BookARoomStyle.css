@@ -1,0 +1,51 @@
+/* Day cell formatting */
+.day-cell {
+    -fx-padding: 10;
+    -fx-border-color: #d0d0d0;
+    -fx-background-color: white;
+    -fx-alignment: center;
+    -fx-min-width: 100;
+    -fx-min-height: 100;
+}
+
+
+.day-cell.active-cell:hover {
+    -fx-background-color: #e8f0ff;
+    -fx-cursor: hand;
+}
+
+.outside-month {
+    -fx-opacity: 0.4;
+}
+
+
+
+.weekday-label {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.room-slot {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #c0c0c0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.room-slot:hover {
+    -fx-background-color: #d0e8ff;
+     -fx-cursor: hand;
+}
+
+.time-slot {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #c0c0c0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.time-slot:hover {
+    -fx-background-color: #d0e8ff;
+     -fx-cursor: hand;
+}
+

@@ -4,4 +4,8 @@ cc04e08c-d6ff-48eb-9b81-a62a6e02e200,cec,cec,cec,123,CEC,[],3
 9a943c0c-7586-43ad-b499-4fecf709b053,dame,dame,dame,123,User,[],0
 96b26ec4-7442-40e4-9b37-f79e5a56e3a9,looongggggggggggggggggggggggggggg,looongggggggggggggggggggggggggggg,admin,123,Admin,[],3
 0a4ef1c0-272e-4ad4-b599-ae3ce31035ef,swag,master,123@email.com,Hello123!,User,[],0
-
+98d8d3f5-3bb0-459a-9abf-3c577b0a93f7,katya,123,katya2@yorku.ca,123H!ppp,User,[],0
+USER1, Alice, Smith, alice.smith@example.com, 123, User, [1;5;11], 2
+USER2, Bob, Johnson, bob.johnson@example.com, 123, User, [2;15;21], 3
+USER3, Carol, Lee, carol.lee@example.com, 123, User, [3;17;23], 1
+USER4, David, Brown, david.brown@example.com, 123, User, [4;18;24], 0
