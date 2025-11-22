@@ -27,6 +27,7 @@ public class BookingView extends ListCell<Booking>
     private final Label roomLabel;
     private final Label timeLabel;
     private final Button editButton;
+    private final Button checkInButton;
     private final Region emptySpace;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mm a");
 
@@ -104,7 +105,7 @@ public class BookingView extends ListCell<Booking>
         });
         
         //check in button
-        Button checkInButton = new Button("Check In");
+        checkInButton = new Button("Check In");
         checkInButton.setStyle("-fx-background-color: #02aa33; -fx-cursor: hand; -fx-text-fill: white;");
       
         checkInButton.setOnAction(event -> {
@@ -128,18 +129,24 @@ public class BookingView extends ListCell<Booking>
                 		 successAlert2.setHeaderText("Success!");
                 		 successAlert2.setContentText("You have successfully checked into your booking!");
                 		 successAlert2.showAndWait();
-                		 getListView().getItems();
+                		 checkInButton.setVisible(false);
+                         checkInButton.setManaged(false);
+                		 getListView().refresh();
                 	 }
                  });
                  
         	 }
+        	 
         	
         }
         );
+        
+        
         if(isHost)
         {
         	root = new HBox(10, card, emptySpace, checkInButton, editButton, cancelButton);
         }
+        
         
         else
         {
@@ -173,7 +180,11 @@ public class BookingView extends ListCell<Booking>
             dateLabel.setText(newBooking.getStartTime().getMonth().name() + " " + newBooking.getStartTime().getDayOfMonth() + ", " + newBooking.getStartTime().getYear());
             roomLabel.setText(newBooking.getRoomId());
             timeLabel.setText(newBooking.getStartTime().format(TIME_FORMATTER) + " - " + newBooking.getEndTime().format(TIME_FORMATTER));
-
+            
+            boolean showCheckIn = !Boolean.TRUE.equals(newBooking.getIsCheckedIn());
+            checkInButton.setVisible(showCheckIn);
+            checkInButton.setManaged(showCheckIn);
+            
             setGraphic(root);
 
             setStyle("-fx-background-color: transparent; -fx-padding: 5px 10px 5px 10px;");
