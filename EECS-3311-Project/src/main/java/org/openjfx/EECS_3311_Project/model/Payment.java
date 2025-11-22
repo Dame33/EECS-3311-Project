@@ -28,9 +28,6 @@ public class Payment implements ICSVDataObject{
 		return String.join(",", this.id, ""+this.amount, this.cardNumber, this.userId);
 	}
 	
-    public String getId() {
-		return id;
-	}
     
     public double getAmount() {
 		return amount;
@@ -43,4 +40,32 @@ public class Payment implements ICSVDataObject{
     public String getUserId() {
 		return userId;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+
+//	public String getLastDigitsOfCard() {
+//		return lastDigitsOfCard;
+//	}
+//
+//	public void setLastDigitsOfCard(String lastDigitsOfCard) {
+//		this.lastDigitsOfCard = lastDigitsOfCard;
+//	}
+
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+
 }

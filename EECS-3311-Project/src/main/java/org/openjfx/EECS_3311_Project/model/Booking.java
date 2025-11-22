@@ -15,7 +15,7 @@ public class Booking implements ICSVDataObject {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private LocalDateTime checkInTime;
-    private Status status;
+	private String studentOrOrganizationId;
     
     public Booking(String csvRow) {
         String[] tokens = csvRow.split(",");
@@ -43,24 +43,10 @@ public class Booking implements ICSVDataObject {
         String checkInToken = tokens[8].trim();
         this.checkInTime = checkInToken.isEmpty() ? null : LocalDateTime.parse(checkInToken);
 
-        this.status = Status.valueOf(tokens[9].trim());
+        this.studentOrOrganizationId = tokens[9].trim();
     }
 
 
-    public Booking(String id, String roomId, String name, Boolean isCheckedIn, String hostId, List<String> attendeeIds,
-                   LocalDateTime startTime, LocalDateTime endTime, LocalDateTime checkInTime, Status status) {
-        this.id = id;
-        this.roomId = roomId;
-        this.name = name;
-        this.isCheckedIn = isCheckedIn;
-        this.hostId = hostId;
-        this.attendeeIds = attendeeIds != null ? attendeeIds : new ArrayList<>();
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.checkInTime = checkInTime;
-        this.status = status;
-    }
-    
     public Booking(String roomId, String hostId, LocalDateTime startTime, LocalDateTime endTime) {
     	this.id = UUID.randomUUID().toString();
     	this.roomId = roomId;
@@ -71,49 +57,98 @@ public class Booking implements ICSVDataObject {
         this.startTime = startTime;
         this.endTime = endTime;
         this.checkInTime = null;
-        this.status = Status.DRAFT;
     }
 
-    public Booking(String roomId, String name, 
-    				Boolean isCheckedIn,String hostId, 
-    				List<String> attendeeIds,
-					LocalDateTime startTime,
-					LocalDateTime endTime, LocalDateTime checkInTime) {
-        this(UUID.randomUUID().toString(), roomId, name, isCheckedIn, hostId, attendeeIds, startTime, endTime, checkInTime, Status.ACTIVE);
-    }
+    public String getId() {
+		return id;
+	}
 
-    public Booking(String name, String roomId, LocalDateTime startTime, LocalDateTime endTime, boolean isCheckedIn)
-    {
-        this.name = name;
-        this.roomId = roomId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.isCheckedIn = isCheckedIn;
-    }
 
-    public String getId() { return id; }
-    public String getRoomId() { return roomId; }
-    public Boolean getIsCheckedIn() { return isCheckedIn; }
-    public void setActive() { this.isCheckedIn = true; }
-    public void setInactive() { this.isCheckedIn = false; }
-    public String getHostId() { return hostId; }
-    public void setHostId(String hostId) { this.hostId = hostId; }
-    public List<String> getAttendeeIds() { return attendeeIds; }
-    public void setAttendeeIds(List<String> attendeeIds) { this.attendeeIds = attendeeIds; }
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
-    public LocalDateTime getStartTime() { return startTime; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
-    public LocalDateTime getCheckIn() { return checkInTime; }
-    public void setCheckIn(LocalDateTime checkInTime) { this.checkInTime = checkInTime; }
-    public String getName() {
-    	return name;
-    }
-    
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    @Override
+
+	public String getRoomId() {
+		return roomId;
+	}
+
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public Boolean getIsCheckedIn() {
+		return isCheckedIn;
+	}
+
+
+	public void setIsCheckedIn(Boolean isCheckedIn) {
+		this.isCheckedIn = isCheckedIn;
+	}
+
+
+	public String getHostId() {
+		return hostId;
+	}
+
+
+	public void setHostId(String hostId) {
+		this.hostId = hostId;
+	}
+
+
+	public List<String> getAttendeeIds() {
+		return attendeeIds;
+	}
+
+
+	public void setAttendeeIds(List<String> attendeeIds) {
+		this.attendeeIds = attendeeIds;
+	}
+
+
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+
+
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
+	}
+
+
+	public LocalDateTime getCheckInTime() {
+		return checkInTime;
+	}
+
+
+	public void setCheckInTime(LocalDateTime checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+
     public String toCSVRow() {
         String attendees = "[]";
         if (!attendeeIds.isEmpty()) {
@@ -123,10 +158,31 @@ public class Booking implements ICSVDataObject {
         String checkedTime = checkInTime != null ? checkInTime.toString() : "";
 
         return String.join(",", id, roomId, name, checkedInStr, hostId, attendees,
-                startTime.toString(), endTime.toString(), checkedTime, status.name());
+                startTime.toString(), endTime.toString(), checkedTime, studentOrOrganizationId);
     }
     
-    public double calculatePrice(AccountRole user_type, double hours) {
-    	return user_type.getHourlyRate() * hours;
+    public double calculateDepositPrice(AccountRole user_type) {
+    	// req says user is charged 1 hour deposit fee upfront
+    	return user_type.getHourlyRate();
+    } 
+    
+    public double calculateTotalPrice(AccountRole user_type, double hours) {
+    	// this is called when user checks in, so  subtract 1 hour from fee since it's been paid already.
+    	
+    	return user_type.getHourlyRate() * (hours -1);
+    	
     }
+
+
+	public String getStudentOrOrganizationId() {
+		return studentOrOrganizationId;
+	}
+
+
+	public void setStudentOrOrganizationId(String studentOrOrganizationId) {
+		this.studentOrOrganizationId = studentOrOrganizationId;
+	}
+
+
+	
 }

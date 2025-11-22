@@ -4,4 +4,5 @@ public interface ICSVDataObject {
 	
 	public String toCSVRow();
 
+	public String getId();
 }

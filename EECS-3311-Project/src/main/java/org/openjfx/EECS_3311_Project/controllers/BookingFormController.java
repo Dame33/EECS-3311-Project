@@ -20,6 +20,7 @@ import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openjfx.EECS_3311_Project.Mediator;
 import org.openjfx.EECS_3311_Project.Session;
@@ -36,7 +37,7 @@ public class BookingFormController {
     @FXML private VBox timePicker;
     @FXML private VBox roomPicker;
     private final java.util.List<LocalTime> selectedTimes = new ArrayList<>();
-    private ArrayList<Booking> bookingsForDay = new ArrayList<Booking>();
+    private List<Booking> bookingsForDay = new ArrayList<Booking>();
     
     private Room selectedRoom; 
     private LocalDate selectedDate; 
@@ -71,12 +72,10 @@ public class BookingFormController {
     	    // combine with the selected date
     	    LocalDateTime startDateTime = LocalDateTime.of(selectedDate, startTime);
     	    LocalDateTime endDateTime = LocalDateTime.of(selectedDate, endTime);
+    	    Booking newBooking = new Booking( selectedRoom.getId(), Session.getUser().getId(), startDateTime, endDateTime);
 
-
-    	    Booking newBooking = new Booking(selectedRoom.getRoomId(), Session.getUser().getId(), startDateTime, endDateTime);
-
-    	    Session.setNewBooking(newBooking);
-
+    	    Session.setEditBooking(newBooking);
+    	    Session.isEditingBooking = false ; // creating new booking
     	    SceneManager.changeScene(event, "BookingEdit.fxml", "Edit Booking");
     	} else {
 		    // show alert if no time selected
@@ -223,7 +222,7 @@ public class BookingFormController {
     private void showTimePicker(LocalDate date) {
     	selectedTimes.clear();
     	timePicker.getChildren().clear(); // remove previous times
-    	bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getRoomId(), date);
+    	bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getId(), date);
 
     	Label roomLabel = new Label((selectedRoom != null ? selectedRoom.getRoomName() : "None"));
 	    roomLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
@@ -234,7 +233,7 @@ public class BookingFormController {
         timesContainer.setPadding(new Insets(10));
 
         LocalTime start = LocalTime.of(7, 0);  // booking times start at 7
-        LocalTime end = LocalTime.of(22, 0);   // booking times end at 22
+        LocalTime end = LocalTime.of(21, 30);   // booking times end at 21:30
 
         LocalTime current = start;
         while (!current.isAfter(end)) {
@@ -255,7 +254,11 @@ public class BookingFormController {
         slot.setMinHeight(40);
         slot.setMaxWidth(Double.MAX_VALUE);
 
-        Label lbl = new Label(time.format(DateTimeFormatter.ofPattern("h:mm a")));
+        LocalDateTime startDateTime = LocalDateTime.of(date, time);
+        LocalDateTime endDateTime = startDateTime.plusMinutes(30);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+
+        Label lbl = new Label(startDateTime.format(formatter) + " - " + endDateTime.format(formatter));
         slot.getChildren().add(lbl);
         StackPane.setAlignment(lbl, Pos.CENTER_LEFT);
         StackPane.setMargin(lbl, new Insets(0,0,0,10));
@@ -352,7 +355,7 @@ public class BookingFormController {
         for (Node node : timesContainer.getChildren()) {
             StackPane slot = (StackPane) node;
             Label lbl = (Label) slot.getChildren().get(0);
-            LocalTime slotTime = LocalTime.parse(lbl.getText(), DateTimeFormatter.ofPattern("h:mm a"));
+            LocalTime slotTime = LocalTime.parse(lbl.getText().split(" - ")[0], DateTimeFormatter.ofPattern("h:mm a")); // get starting time
 
             boolean isBooked = slot.getUserData() != null && (boolean) slot.getUserData();
 

@@ -1,4 +1,4 @@
-ROOM1,Room 101,true,50,Building A
+ROOM1,Room 101 TEST,true,50,Building A
 ROOM2,Room 102,true,50,Building A
 ROOM3,Lab 1,true,20,Building C
 ROOM4,Conference Hall,false,100,Building A
@@ -17,4 +17,4 @@ ROOM16,Auditorium 2,false,180,Building A
 ROOM17,Room 107,true,60,Building B
 ROOM18,Meeting Room 2,true,20,Building C
 ROOM19,Room 108,false,40,Building A
-ROOM20,Lecture Hall 2,true,150,Building D
+ed229626-37b7-4cac-93fc-ed68b4d94d98,testing room,true,60,123

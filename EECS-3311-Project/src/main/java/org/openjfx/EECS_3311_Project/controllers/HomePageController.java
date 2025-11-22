@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.openjfx.EECS_3311_Project.Mediator;
@@ -57,29 +58,17 @@ public class HomePageController implements Initializable {
 
         lv_invitedBookingsListView.setCellFactory(param -> new BookingView(false));
         lv_invitedBookingsListView.setPlaceholder(new Label("No bookings yet"));
-
-
-
-        ObservableList<Booking> hostBookings = FXCollections.observableArrayList();
-        ObservableList<Booking> invitedBookings = FXCollections.observableArrayList();
         
-        //get latest data from the database
-        ArrayList<Booking> hostBookingsList = new ArrayList<>();
-        hostBookingsList = mediator.getAllHostBookings(Session.getUser().getId());
-        
-        ArrayList<Booking> invitedBookingsList = new ArrayList<>();
+        List<Booking> invitedBookingsList = new ArrayList<>();
         invitedBookingsList = mediator.getAllInvitedBookings(Session.getUser().getId());
-        
-             
-        //update the data in the user class
-        Session.getUser().updateHostBookingsFromDatabase(hostBookingsList);
-        Session.getUser().updateInvitedBookingsFromDatabase(invitedBookingsList);
+
         
         //set the data to the observable lists
-        hostBookings = Session.getUser().getObservableHostBookings();
-        invitedBookings = Session.getUser().getObservableInvitedBookings();
+      
+        ObservableList<Booking> hostBookings = FXCollections.observableArrayList(Session.getUser().getBookings());
+        ObservableList<Booking> invitedBookings = FXCollections.observableArrayList(mediator.getAllInvitedBookings(Session.getUser().getId()));
         
-        
+   
         //load data into the view
         lv_createdBookingsListView.setItems(hostBookings);
         lv_invitedBookingsListView.setItems(invitedBookings);

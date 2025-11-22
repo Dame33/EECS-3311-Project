@@ -1,6 +1,7 @@
 package org.openjfx.EECS_3311_Project.controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openjfx.EECS_3311_Project.Mediator;
 import org.openjfx.EECS_3311_Project.model.User;
@@ -36,8 +37,7 @@ public class CECController {
 		        contentArea.getChildren().setAll(adminPage);
 
 		        // retrieve all users
-		        ArrayList<User> users = Mediator.getInstance()
-		                                        .getAllUsers();
+		        List<User> users = Mediator.getInstance().getAllUsers();
 
 		        for (User u : users) {
 		            HBox row = createAdminRow(u);
@@ -66,7 +66,7 @@ public class CECController {
 		adminCheck.setOnAction(e -> {
 			boolean newValue = adminCheck.isSelected();
 
-			Mediator.getInstance().getUserManager().toggleAdmin(user.getId(), newValue);
+			Mediator.getInstance().toggleAdmin(user, newValue);
 			user.setUserType(newValue ? "Admin" : "User");
 		});
 
