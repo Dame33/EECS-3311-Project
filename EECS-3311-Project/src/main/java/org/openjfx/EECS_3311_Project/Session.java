@@ -22,8 +22,8 @@ public class Session {
     
     public static Page getCurrentPage() { return currentPage; }
     public static void setCurrentPage(Page p) { currentPage = p; }
-	public static void setNewBooking(Booking newBooking) {
-		newBooking = newBooking;
+	public static void setNewBooking(Booking b) {
+		newBooking = b;
 		
 	}
 	public static Booking getNewBooking() {return newBooking;}

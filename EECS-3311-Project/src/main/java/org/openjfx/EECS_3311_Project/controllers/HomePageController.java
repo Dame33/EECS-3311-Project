@@ -13,8 +13,10 @@ import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import org.openjfx.EECS_3311_Project.Mediator;
 import org.openjfx.EECS_3311_Project.Session;
 import org.openjfx.EECS_3311_Project.model.Booking;
 import org.openjfx.EECS_3311_Project.model.User;
@@ -42,30 +44,49 @@ public class HomePageController implements Initializable {
     private ListView<Booking> lv_createdBookingsListView;
     @FXML
     private ListView<Booking> lv_invitedBookingsListView;
+    
+    private Mediator mediator = Mediator.getInstance();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setUserInfo(Session.getUser());
 
-        lv_createdBookingsListView.setCellFactory(param -> new BookingView());
+        lv_createdBookingsListView.setCellFactory(param -> new BookingView(true));
         lv_createdBookingsListView.setPlaceholder(new Label("No bookings yet"));
 
-        lv_invitedBookingsListView.setCellFactory(param -> new BookingView());
+        lv_invitedBookingsListView.setCellFactory(param -> new BookingView(false));
         lv_invitedBookingsListView.setPlaceholder(new Label("No bookings yet"));
 
 
 
-        ObservableList<Booking> testBookings = FXCollections.observableArrayList();
-
-        testBookings.add(new Booking("Test Name 1", "Room 101", LocalDateTime.now(), LocalDateTime.now(), false));
-        testBookings.add(new Booking("Test Name 2", "Room 101", LocalDateTime.now(), LocalDateTime.now(), false));
-
-        testBookings.add(new Booking("Test Name 3", "Room 101", LocalDateTime.now(), LocalDateTime.now(), false));
-
-
+        ObservableList<Booking> hostBookings = FXCollections.observableArrayList();
+        ObservableList<Booking> invitedBookings = FXCollections.observableArrayList();
+        
+        //get latest data from the database
+        ArrayList<Booking> hostBookingsList = new ArrayList<>();
+        hostBookingsList = mediator.getAllHostBookings(Session.getUser().getId());
+        
+        ArrayList<Booking> invitedBookingsList = new ArrayList<>();
+        invitedBookingsList = mediator.getAllInvitedBookings(Session.getUser().getId());
+        
+             
+        //update the data in the user class
+        Session.getUser().updateHostBookingsFromDatabase(hostBookingsList);
+        Session.getUser().updateInvitedBookingsFromDatabase(invitedBookingsList);
+        
+        //set the data to the observable lists
+        hostBookings = Session.getUser().getObservableHostBookings();
+        invitedBookings = Session.getUser().getObservableInvitedBookings();
+        
+        
         //load data into the view
-        lv_createdBookingsListView.setItems(testBookings);
-        lv_invitedBookingsListView.setItems(null);
+        lv_createdBookingsListView.setItems(hostBookings);
+        lv_invitedBookingsListView.setItems(invitedBookings);
+        
+        //prevent box selection
+        lv_createdBookingsListView.setSelectionModel(null);
+        lv_invitedBookingsListView.setSelectionModel(null);
     }
 
     public void setUserInfo(User user) {

@@ -134,4 +134,18 @@ public class BookingManager {
 	public ArrayList<Booking> getBookingsByRoomAndDate(String roomId, LocalDate date) {
 		return csv.getBookingsByRoomAndDate(roomId, date);
 	}
+	
+	public ArrayList<Booking> getAllHostBookings(String userId)
+	{
+		ArrayList<Booking> hostBookings = csv.getHostBookingsByUserId(userId);
+		
+		return hostBookings;
+	}
+	
+	public ArrayList<Booking> getAllInvitedBookings(String userId)
+	{
+		ArrayList<Booking> invitedBookings = csv.getInvitedBookingsByUserId(userId);
+		
+		return invitedBookings;
+	}
 }

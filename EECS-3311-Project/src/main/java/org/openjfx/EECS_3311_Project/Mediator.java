@@ -71,6 +71,15 @@ public class Mediator {
 		return bookingManager.getBookingsByRoomAndDate(roomId,  date);
 	}
 	
+	public ArrayList<Booking> getAllHostBookings(String userId)
+	{
+		return bookingManager.getAllHostBookings(userId);
+	}
+	public ArrayList<Booking> getAllInvitedBookings(String userId)
+	{
+		return bookingManager.getAllInvitedBookings(userId);
+	}
+	
 	
 
 	

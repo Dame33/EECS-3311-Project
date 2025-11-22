@@ -192,7 +192,7 @@ public class CSVAdapter implements ICSVRepository{
     	//ArrayList<Booking> allBookings = new ArrayList<>(invitedBookings);
     	//allBookings.addAll(hostBookings);
     	
-    	user.setBookings(hostBookings); // we only need the user's hosted bookings
+    	user.setHostBookings(hostBookings); // we only need the user's hosted bookings
     	return user;
     }
     

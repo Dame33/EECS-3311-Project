@@ -14,8 +14,11 @@ public class User implements ICSVDataObject {
 	private String email;
 	private String password;
 	private String userType;
-	private ArrayList<Booking> bookings;
-	private ObservableList<Booking> observableBookings;
+	private ArrayList<Booking> allBookings;
+	private ArrayList<Booking> hostBookings;
+	private ObservableList<Booking> observableHostBookings;
+	private ArrayList<Booking> invitedBookings;
+	private ObservableList<Booking> observableInvitedBookings;
 	private AccountRole accountRole;
 
 
@@ -25,8 +28,11 @@ public class User implements ICSVDataObject {
 	    this.lastName = lastName;
 	    this.email = email;
 	    this.password= password;
-		this.bookings  = new ArrayList<Booking>();
-		this.observableBookings = FXCollections.observableList(bookings);
+		this.hostBookings  = new ArrayList<Booking>();
+		this.observableHostBookings = FXCollections.observableList(hostBookings);
+		this.invitedBookings = new ArrayList<Booking>();
+		this.observableInvitedBookings = FXCollections.observableList(invitedBookings);
+		this.allBookings = new ArrayList<Booking>();
     }
 	
 	public User(String firstName, String lastName, String email, String password) {
@@ -35,8 +41,11 @@ public class User implements ICSVDataObject {
 	    this.lastName = lastName;
 	    this.email = email;
 	    this.password= password;
-		this.bookings  = new ArrayList<Booking>();
-		this.observableBookings = FXCollections.observableList(bookings);
+		this.hostBookings  = new ArrayList<Booking>();
+		this.observableHostBookings = FXCollections.observableList(hostBookings);
+		this.invitedBookings = new ArrayList<Booking>();
+		this.observableInvitedBookings = FXCollections.observableList(invitedBookings);
+		this.allBookings = new ArrayList<Booking>();
     }
 
 	//constructor with added parameters not including bookings
@@ -60,8 +69,11 @@ public class User implements ICSVDataObject {
 		this.password = password;
 		this.userType = userType;
 		this.accountRole = accountType;
-		this.bookings  = new ArrayList<Booking>();
-		this.observableBookings = FXCollections.observableList(bookings);
+		this.hostBookings  = new ArrayList<Booking>();
+		this.observableHostBookings = FXCollections.observableList(hostBookings);
+		this.invitedBookings = new ArrayList<Booking>();
+		this.observableInvitedBookings = FXCollections.observableList(invitedBookings);
+		this.allBookings = new ArrayList<Booking>();
 	}
 	
 	public User()
@@ -99,12 +111,17 @@ public class User implements ICSVDataObject {
         this.userType = userType;
         this.accountRole = new AccountRole();
         this.accountRole.setId(accountRoleId);
+        this.hostBookings  = new ArrayList<Booking>();
+		this.observableHostBookings = FXCollections.observableList(hostBookings);
+		this.invitedBookings = new ArrayList<Booking>();
+		this.observableInvitedBookings = FXCollections.observableList(invitedBookings);
+		this.allBookings = new ArrayList<Booking>();
 
 	}
 	
 	
 	public String toCSVRow() {// update to join by comma, added suppoort for bookings
-		String bookings = this.getBookings().stream()
+		String bookings = this.getHostBookings().stream() 
 		        .map(Booking::getId)     
 		        .map(String::valueOf)   
 		        .collect(Collectors.joining(";")); 
@@ -159,21 +176,51 @@ public class User implements ICSVDataObject {
 		this.userType = userType;
 	}
 
-	public ArrayList<Booking> getBookings() {
-		return bookings;
+	public ArrayList<Booking> getHostBookings() {
+		return hostBookings;
 	}
 
-	public ObservableList<Booking> getObservableBookings()
+	public ObservableList<Booking> getObservableHostBookings()
 	{
-		return observableBookings;
+		return observableHostBookings;
+	}
+	
+	public ArrayList<Booking> getInvitedBookings()
+	{
+		return invitedBookings;
+	}
+	public ObservableList<Booking> getObservableInvitedBookings()
+	{
+		return observableInvitedBookings;
+	}
+	
+	public void addBooking(Booking b)
+	{
+		observableHostBookings.add(b);
+	}
+	
+	public void updateHostBookingsFromDatabase(ArrayList<Booking> updatedData)
+	{
+		this.hostBookings = updatedData;
+		observableHostBookings.setAll(updatedData);
+	}
+	
+	public void updateInvitedBookingsFromDatabase(ArrayList<Booking> updatedData)
+	{
+		this.invitedBookings = updatedData;
+		observableInvitedBookings.setAll(updatedData);
+	}
+	
+	public void setHostBookings(ArrayList<Booking> bookings)
+	{
+		this.hostBookings = bookings;
+	}
+	
+	public void setInvitedBookings(ArrayList<Booking> bookings)
+	{
+		this.invitedBookings = bookings;
 	}
 
-
-	public void setBookings(ArrayList<Booking> bookings) {
-		this.bookings = bookings;
-		//the observable list used by the gui
-		this.observableBookings = FXCollections.observableList(this.bookings);
-	}
 
 	public AccountRole getAccountRole() {
 		return accountRole;
@@ -182,6 +229,18 @@ public class User implements ICSVDataObject {
 	public void setAccountRole(AccountRole accountType) {
 		this.accountRole = accountType;
 	}
+	
+	public ArrayList<Booking> getAllBookings()
+	{
+		return allBookings;
+	}
+	
+	public void setAllBookings(ArrayList<Booking> bookings)
+	{
+		allBookings = bookings;
+	}
+	
+	
 	
 	
 }

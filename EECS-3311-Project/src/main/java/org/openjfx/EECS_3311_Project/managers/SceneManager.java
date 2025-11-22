@@ -46,7 +46,10 @@ public class SceneManager {
           }
 
       } catch (IOException e) {
+    	  System.err.println("failed to load: " + fxmlFile);
           e.printStackTrace();
+          
+          return;
       }
 
       //Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
