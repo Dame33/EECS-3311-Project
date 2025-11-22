@@ -11,8 +11,11 @@ import java.util.List;
 
 import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
+import org.openjfx.EECS_3311_Project.model.Double;
 import org.openjfx.EECS_3311_Project.model.Room;
+import org.openjfx.EECS_3311_Project.model.Payment;
 import org.openjfx.EECS_3311_Project.model.Status;
+import org.openjfx.EECS_3311_Project.model.String;
 import org.openjfx.EECS_3311_Project.model.User;
 
 public class CSVAdapter implements ICSVRepository{
@@ -519,10 +522,6 @@ public class CSVAdapter implements ICSVRepository{
 	}
 
 
-
-
-
-
 	@Override
 	public Room removeRoom(String roomId) {
 	    try {
@@ -597,5 +596,120 @@ public class CSVAdapter implements ICSVRepository{
 	    }
 
 	    return bookings;
+	}
+	
+	
+	@Override
+	public Payment createRecord(Payment payment) {
+		 try {
+			 	System.out.println("creating record payment: " + payment.toCSVRow());
+		        List<String> lines = new ArrayList<>();
+
+		        if (Files.exists(DatabaseUtils.paymentsFilePath)) {
+		            lines = Files.readAllLines(DatabaseUtils.paymentsFilePath);
+		        }
+
+		        String targetId = payment.getId();
+		        boolean new_record = true;
+
+		        // find row with the same id
+		        for (int i = 0; i < lines.size(); i++) {
+		            String[] parts = lines.get(i).split(",");
+
+		            if (parts.length > 0 && parts[0].equals(targetId)) {
+		            	System.out.println("not a new record");
+		                // update if found
+		                lines.set(i, payment.toCSVRow());
+		                new_record = false;
+		                break;
+		            }
+		        }
+
+		        // insert if this is not an update
+		        if (!new_record) {
+		            lines.add(payment.toCSVRow());
+	            	System.out.println("going to insert!");
+
+		        }
+
+		        // we need to rewrite the whole file for an update :/
+		        Files.write(
+		        	DatabaseUtils.paymentsFilePath,
+		            lines,
+		            StandardOpenOption.CREATE,
+		            StandardOpenOption.TRUNCATE_EXISTING
+		        );
+
+		        return room;
+
+		    } catch (IOException ex) {
+		        ex.printStackTrace();
+		        return null;
+		    }
+	}
+	
+	public boolean validatePayment(Payment payment) {
+		boolean valid_payment_record = true;
+
+	    if (payment == null) {
+	    	valid_payment_record = false;
+	        throw new IllegalArgumentException("Payment cannot be null");
+	    }
+
+	    // Validate id
+	    if (payment.getId().trim().isEmpty()) {
+	    	valid_payment_record = false;
+	        throw new IllegalArgumentException("Payment id cannot be null or blank");
+	    }
+
+	    // Validate amount
+	    if (payment.getAmount() <= 0.0) {
+	    	valid_payment_record = false;
+	        throw new IllegalArgumentException("Amount must be greater than 0");
+	    }
+
+	    // Validate last digits / card number
+	    String cardNumber = payment.getCardNumber();
+	    if (cardNumber.trim().isEmpty()) {
+	    	valid_payment_record = false;
+	        throw new IllegalArgumentException("Card digits cannot be null or blank");
+	    }
+	    if (!cardNumber.matches("\\d+")) {
+	    	valid_payment_record = false;
+	        throw new IllegalArgumentException("Card digits must contain only numbers");
+	    }
+	    if (cardNumber.length() >= 13 && !isValidLuhn(cardNumber)) {
+	    	valid_payment_record = false;
+	        throw new IllegalArgumentException("Invalid card number (failed Luhn check)");
+	    }
+
+	    // Validate userId
+	    if (payment.getUserId().trim().isEmpty()) {
+	    	valid_payment_record = false;
+	        throw new IllegalArgumentException("User ID cannot be null or blank");
+	    }
+	    
+	    return valid_payment_record;
+	}
+	
+	private static boolean isValidLuhn(String cardNumber) {
+	    int sum = 0;
+	    boolean alternate = false;
+
+	    for (int i = cardNumber.length() - 1; i >= 0; i--) {
+	        int n = cardNumber.charAt(i) - '0';
+
+	        if (alternate) {
+	            n *= 2;
+	            if (n > 9) {
+	                n = (n % 10) + 1;
+	            }
+	        }
+
+	        sum += n;
+	        alternate = !alternate;
+	    }
+
+	    return (sum % 10 == 0);
 	}
 }

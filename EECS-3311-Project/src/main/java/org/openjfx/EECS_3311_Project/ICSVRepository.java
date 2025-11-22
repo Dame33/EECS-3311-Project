@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
+import org.openjfx.EECS_3311_Project.model.Payment;
 import org.openjfx.EECS_3311_Project.model.Room;
 import org.openjfx.EECS_3311_Project.model.User;
 
@@ -36,4 +37,6 @@ public interface ICSVRepository {
 	Room upsertRoom(Room room);
 	Room removeRoom(String roomId);
 	ArrayList<Booking> getBookingsByRoomAndDate(String roomId, LocalDate date);
+	Payment createRecord(Payment payment);
+	boolean validatePayment(Payment payment);
 }
