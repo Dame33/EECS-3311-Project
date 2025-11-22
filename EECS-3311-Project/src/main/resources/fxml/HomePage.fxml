@@ -51,9 +51,11 @@
                 
             </VBox>
 
-            <VBox alignment="CENTER" spacing="10">
-                <Text text="Upcoming Bookings" />
-            <ListView fx:id="lv_bookingsListView" prefHeight="200.0" prefWidth="200.0" />
+            <VBox alignment="CENTER" prefHeight="136.0" prefWidth="200.0" spacing="10">
+                <Text text="Created Bookings" />
+            <ListView fx:id="lv_createdBookingsListView" prefHeight="158.0" prefWidth="200.0" />
+            <Text text="Invited Bookings" />
+            <ListView fx:id="lv_invitedBookingsListView" prefHeight="172.0" prefWidth="200.0" />
             </VBox>
 
         </HBox>

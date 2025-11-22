@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -38,19 +39,22 @@ public class HomePageController implements Initializable {
     @FXML
     private Text text_hourlyRate;
     @FXML
-    private ListView<Booking> lv_bookingsListView;
+    private ListView<Booking> lv_createdBookingsListView;
+    @FXML
+    private ListView<Booking> lv_invitedBookingsListView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setUserInfo(Session.getUser());
 
-        lv_bookingsListView.setCellFactory(param -> new BookingView());
+        lv_createdBookingsListView.setCellFactory(param -> new BookingView());
+        lv_createdBookingsListView.setPlaceholder(new Label("No bookings yet"));
 
-        lv_bookingsListView.setPlaceholder(new Label("No bookings yet"));
+        lv_invitedBookingsListView.setCellFactory(param -> new BookingView());
+        lv_invitedBookingsListView.setPlaceholder(new Label("No bookings yet"));
 
 
-        // 2. CREATE DUMMY DATA (The test)
-        // In the real app, this list comes from your User object
+
         ObservableList<Booking> testBookings = FXCollections.observableArrayList();
 
         testBookings.add(new Booking("Test Name 1", "Room 101", LocalDateTime.now(), LocalDateTime.now(), false));
@@ -59,8 +63,9 @@ public class HomePageController implements Initializable {
         testBookings.add(new Booking("Test Name 3", "Room 101", LocalDateTime.now(), LocalDateTime.now(), false));
 
 
-        // 3. LOAD THE DATA INTO THE VIEW
-        lv_bookingsListView.setItems(testBookings);
+        //load data into the view
+        lv_createdBookingsListView.setItems(testBookings);
+        lv_invitedBookingsListView.setItems(null);
     }
 
     public void setUserInfo(User user) {
