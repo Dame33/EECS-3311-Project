@@ -73,7 +73,7 @@ public class BookingFormController {
     	    LocalDateTime endDateTime = LocalDateTime.of(selectedDate, endTime);
 
 
-    	    Booking newBooking = new Booking( selectedRoom.getRoomId(), Session.getUser().getId(), startDateTime, endDateTime);
+    	    Booking newBooking = new Booking( selectedRoom.getId(), Session.getUser().getId(), startDateTime, endDateTime);
     	    Session.setNewBooking(newBooking);
     	    
     	    SceneManager.changeScene(event, "BookingEdit.fxml", "Edit Booking");
@@ -222,7 +222,7 @@ public class BookingFormController {
     private void showTimePicker(LocalDate date) {
     	selectedTimes.clear();
     	timePicker.getChildren().clear(); // remove previous times
-    	bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getRoomId(), date);
+    	bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getId(), date);
 
     	Label roomLabel = new Label((selectedRoom != null ? selectedRoom.getRoomName() : "None"));
 	    roomLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");

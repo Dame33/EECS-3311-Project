@@ -1,32 +1,35 @@
 package org.openjfx.EECS_3311_Project.managers;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
-import org.openjfx.EECS_3311_Project.CSVAdapter;
-import org.openjfx.EECS_3311_Project.ICSVRepository;
-import org.openjfx.EECS_3311_Project.model.AccountRole;
+import org.openjfx.EECS_3311_Project.csv.UserCSVOperations;
 import org.openjfx.EECS_3311_Project.model.User;
 
 public class UserManager {
 	
-	ICSVRepository csvRepository = CSVAdapter.getInstance();
+	//ICSVRepository csvRepository = CSVRepository.getInstance();
+	UserCSVOperations userCSV = new UserCSVOperations();
 
 	public User createAccount(User user) {
-		// TODO Auto-generated method stub
-		return csvRepository.createAccount(user);
+		return userCSV.create(user);
+		//return csvRepository.createAccount(user);
 	}
 
 	public boolean isEmailTaken(String text) {
-		return csvRepository.isEmailTaken(text);
+		Optional<User> userOpt = userCSV.readOne((user, cols) -> user.getEmail().equalsIgnoreCase(text)); // case insenstive - pass a filter to get one user who matches the email
+		if (userOpt.isPresent()) return true;
+		return false;
 	}
 
 	public User signIn(String email, String password) {
-		return csvRepository.signIn(email, password);
+		Optional<User> userOpt = userCSV.readOne((user, cols) -> user.getEmail().equalsIgnoreCase(email) && user.getPassword().equals(password));
+		if (userOpt.isPresent()) return userOpt.get();
+		return null;
 	}
 
-	public ArrayList<AccountRole> getAccountRoles() {
-		return csvRepository.getAccountRoles();
-	}
+//	public ArrayList<AccountRole> getAccountRoles() {
+//		return csvRepository.getAccountRoles();
+//	}
 
 
 }

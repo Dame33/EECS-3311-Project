@@ -1,9 +1,6 @@
 package org.openjfx.EECS_3311_Project.managers;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.openjfx.EECS_3311_Project.CSVAdapter;
+import org.openjfx.EECS_3311_Project.CSVRepository;
 import org.openjfx.EECS_3311_Project.ICSVRepository;
 import org.openjfx.EECS_3311_Project.Session;
 import org.openjfx.EECS_3311_Project.model.Booking;
@@ -11,14 +8,12 @@ import org.openjfx.EECS_3311_Project.model.Status;
 import org.openjfx.EECS_3311_Project.model.User;
 
 import java.time.LocalDateTime;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BookingManager {
 
-	private final ICSVRepository csv = CSVAdapter.getInstance();
+	private final ICSVRepository csv = CSVRepository.getInstance();
 	
 	
 	public BookingManager() {
@@ -32,7 +27,7 @@ public class BookingManager {
 		}
 		booking.setActive();
 		//NTS need to set check in time, add it to booking
-		booking.setCheckIn(LocalDateTime.now());
+		booking.setCheckInTime(LocalDateTime.now());
 		return csv.upsertBooking(booking);
 	}
 	

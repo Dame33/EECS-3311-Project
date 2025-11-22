@@ -79,26 +79,118 @@ public class Booking implements ICSVDataObject {
         this(UUID.randomUUID().toString(), roomId, name, isCheckedIn, hostId, attendeeIds, startTime, endTime, checkInTime, Status.ACTIVE);
     }
 
+    
+    public void setActive(){
+    	this.status = Status.ACTIVE;
+    	
+    }
+    
+    public void setInactive() {
+    	this.status = Status.CANCELLED;
+    }
+   
 
-    public String getId() { return id; }
-    public String getRoomId() { return roomId; }
-    public Boolean getIsCheckedIn() { return isCheckedIn; }
-    public void setActive() { this.isCheckedIn = true; }
-    public void setInactive() { this.isCheckedIn = false; }
-    public String getHostId() { return hostId; }
-    public void setHostId(String hostId) { this.hostId = hostId; }
-    public List<String> getAttendeeIds() { return attendeeIds; }
-    public void setAttendeeIds(List<String> attendeeIds) { this.attendeeIds = attendeeIds; }
-    public Status getStatus() { return status; }
-    public void setStatus(Status status) { this.status = status; }
-    public LocalDateTime getStartTime() { return startTime; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
-    public LocalDateTime getEndTime() { return endTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
-    public LocalDateTime getCheckIn() { return checkInTime; }
-    public void setCheckIn(LocalDateTime checkInTime) { this.checkInTime = checkInTime; }
+    public String getId() {
+		return id;
+	}
 
-    @Override
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	public String getRoomId() {
+		return roomId;
+	}
+
+
+	public void setRoomId(String roomId) {
+		this.roomId = roomId;
+	}
+
+
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public Boolean getIsCheckedIn() {
+		return isCheckedIn;
+	}
+
+
+	public void setIsCheckedIn(Boolean isCheckedIn) {
+		this.isCheckedIn = isCheckedIn;
+	}
+
+
+	public String getHostId() {
+		return hostId;
+	}
+
+
+	public void setHostId(String hostId) {
+		this.hostId = hostId;
+	}
+
+
+	public List<String> getAttendeeIds() {
+		return attendeeIds;
+	}
+
+
+	public void setAttendeeIds(List<String> attendeeIds) {
+		this.attendeeIds = attendeeIds;
+	}
+
+
+	public LocalDateTime getStartTime() {
+		return startTime;
+	}
+
+
+	public void setStartTime(LocalDateTime startTime) {
+		this.startTime = startTime;
+	}
+
+
+	public LocalDateTime getEndTime() {
+		return endTime;
+	}
+
+
+	public void setEndTime(LocalDateTime endTime) {
+		this.endTime = endTime;
+	}
+
+
+	public LocalDateTime getCheckInTime() {
+		return checkInTime;
+	}
+
+
+	public void setCheckInTime(LocalDateTime checkInTime) {
+		this.checkInTime = checkInTime;
+	}
+
+
+	public Status getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+	@Override
     public String toCSVRow() {
         String attendees = "[]";
         if (!attendeeIds.isEmpty()) {

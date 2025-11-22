@@ -5,32 +5,26 @@ import javafx.scene.control.Alert;
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
 import org.openjfx.EECS_3311_Project.model.Room;
-import org.openjfx.EECS_3311_Project.model.Status;
 import org.openjfx.EECS_3311_Project.model.User;
 
-public class CSVAdapter implements ICSVRepository{
+public class CSVRepository implements ICSVRepository{
     
 
 	
-	public static CSVAdapter instance;
+	public static CSVRepository instance;
 	
-	public static CSVAdapter getInstance() {
+	public static CSVRepository getInstance() {
 		
 		
-		if(instance == null) instance = new CSVAdapter();
+		if(instance == null) instance = new CSVRepository();
 		return instance;
 	}
-//    private final String userDB_CSV = "UserDB.csv";
-//    private final String bookingDB = "BookingDB.csv";
-
-	
 
 
     public Booking upsertBooking(Booking booking) {
@@ -43,7 +37,7 @@ public class CSVAdapter implements ICSVRepository{
         return booking;
     }
 
-    public String cancelBooking(String bookingId) {
+    public String cancelBooking(String bookingId) { // may change to just delete
         ArrayList<Booking> all = getAllBookingsFromFile();
 
         for (Booking b : all) {
@@ -162,7 +156,7 @@ public class CSVAdapter implements ICSVRepository{
             while ((line = br.readLine()) != null) {
                 if (line.isBlank()) continue;
                 
-                User user = getUserWithAccountRoleAndBookings(line);
+                User user = UserFactory.loadFromCSV(line);
                 // add account role
                 
                 if (user != null) {
@@ -177,26 +171,25 @@ public class CSVAdapter implements ICSVRepository{
         return users;
     }
     
-    private User getUserWithAccountRoleAndBookings(String userCSV) {
-    	User user = new User(userCSV);
-    	
-    	String accountRoleRow = getAccountRoleRowById(user.getAccountRole().getId());
-    	AccountRole accountRole = new AccountRole(accountRoleRow);
-    	user.setAccountRole(accountRole);
-    	
-    	String user_id = user.getId(); 
-    	 	
-    	//ArrayList<Booking> invitedBookings = getInvitedBookingsByUserId(user_id);
-    	ArrayList<Booking> hostBookings = getHostBookingsByUserId(user_id);
-
-    	//ArrayList<Booking> allBookings = new ArrayList<>(invitedBookings);
-    	//allBookings.addAll(hostBookings);
-    	
-    	user.setBookings(hostBookings); // we only need the user's hosted bookings
-    	return user;
-    }
+//    private User getUserWithAccountRoleAndBookings(String userCSV) {
+//    	
+//    	String accountRoleRow = getAccountRoleRowById(user.getAccountRole().getId());
+//    	AccountRole accountRole = new AccountRole(accountRoleRow);
+//    	user.setAccountRole(accountRole);
+//    	
+//    	String user_id = user.getId(); 
+//    	 	
+//    	//ArrayList<Booking> invitedBookings = getInvitedBookingsByUserId(user_id);
+//    	ArrayList<Booking> hostBookings = getHostBookingsByUserId(user_id);
+//
+//    	//ArrayList<Booking> allBookings = new ArrayList<>(invitedBookings);
+//    	//allBookings.addAll(hostBookings);
+//    	
+//    	user.setBookings(hostBookings); // we only need the user's hosted bookings
+//    	return user;
+//    }
     
-    private String getAccountRoleRowById(String id) {
+    public String getAccountRoleRowById(String id) {
     	
     	try (BufferedReader br = new BufferedReader(new FileReader(DatabaseUtils.accountRolesFilePath.toString()))) {
             String line;
@@ -398,7 +391,7 @@ public class CSVAdapter implements ICSVRepository{
 
                     if (emailInFile.equalsIgnoreCase(cleanEmail) && passwordInFile.equals(password)) {
 
-                    	return getUserWithAccountRoleAndBookings(line);
+                    	return UserFactory.loadFromCSV(line);
                     }
                 }
             }
@@ -476,98 +469,98 @@ public class CSVAdapter implements ICSVRepository{
 
 
 
-
-	@Override
-	public Room upsertRoom(Room room) {
-		 try {
-			 	System.out.println("upserting room: " + room.toCSVRow());
-		        List<String> lines = new ArrayList<>();
-
-		        if (Files.exists(DatabaseUtils.roomsFilePath)) {
-		            lines = Files.readAllLines(DatabaseUtils.roomsFilePath);
-		        }
-
-		        String targetId = room.getRoomId();
-		        boolean updated = false;
-
-		        // find row with the same id
-		        for (int i = 0; i < lines.size(); i++) {
-		            String[] parts = lines.get(i).split(",");
-
-		            if (parts.length > 0 && parts[0].equals(targetId)) {
-		            	System.out.println("going to update!");
-		                // update if found
-		                lines.set(i, room.toCSVRow());
-		                updated = true;
-		                break;
-		            }
-		        }
-
-		        // insert if this is not an update
-		        if (!updated) {
-		            lines.add(room.toCSVRow());
-	            	System.out.println("going to insert!");
-
-		        }
-
-		        // we need to rewrite the whole file for an update :/
-		        Files.write(
-		        	DatabaseUtils.roomsFilePath,
-		            lines,
-		            StandardOpenOption.CREATE,
-		            StandardOpenOption.TRUNCATE_EXISTING
-		        );
-
-		        return room;
-
-		    } catch (IOException ex) {
-		        ex.printStackTrace();
-		        return null;
-		    }
-	}
-
-
-
+//
+//	@Override
+//	public Room upsertRoom(Room room) {
+//		 try {
+//			 	System.out.println("upserting room: " + room.toCSVRow());
+//		        List<String> lines = new ArrayList<>();
+//
+//		        if (Files.exists(DatabaseUtils.roomsFilePath)) {
+//		            lines = Files.readAllLines(DatabaseUtils.roomsFilePath);
+//		        }
+//
+//		        String targetId = room.getRoomId();
+//		        boolean updated = false;
+//
+//		        // find row with the same id
+//		        for (int i = 0; i < lines.size(); i++) {
+//		            String[] parts = lines.get(i).split(",");
+//
+//		            if (parts.length > 0 && parts[0].equals(targetId)) {
+//		            	System.out.println("going to update!");
+//		                // update if found
+//		                lines.set(i, room.toCSVRow());
+//		                updated = true;
+//		                break;
+//		            }
+//		        }
+//
+//		        // insert if this is not an update
+//		        if (!updated) {
+//		            lines.add(room.toCSVRow());
+//	            	System.out.println("going to insert!");
+//
+//		        }
+//
+//		        // we need to rewrite the whole file for an update :/
+//		        Files.write(
+//		        	DatabaseUtils.roomsFilePath,
+//		            lines,
+//		            StandardOpenOption.CREATE,
+//		            StandardOpenOption.TRUNCATE_EXISTING
+//		        );
+//
+//		        return room;
+//
+//		    } catch (IOException ex) {
+//		        ex.printStackTrace();
+//		        return null;
+//		    }
+//	}
+//
 
 
 
-	@Override
-	public Room removeRoom(String roomId) {
-	    try {
-	        if (!Files.exists(DatabaseUtils.roomsFilePath)) {
-	            return null; //no db
-	        }
 
-	        List<String> lines = Files.readAllLines(DatabaseUtils.roomsFilePath);
-	        Room removedRoom = null;
-
-	        // find room to remove
-	        for (int i = 0; i < lines.size(); i++) {
-	            String[] parts = lines.get(i).split(",");
-	            if (parts.length > 0 && parts[0].equals(roomId)) {
-	                removedRoom = new Room(lines.get(i)); // get room that is being removed
-	                lines.remove(i);
-	                break;
-	            }
-	        }
-
-	        // rewrite the csv without the line we are removing
-	        Files.write(
-	            DatabaseUtils.roomsFilePath,
-	            lines,
-	            StandardOpenOption.CREATE,
-	            StandardOpenOption.TRUNCATE_EXISTING
-	        );
-	        
-	        System.out.println("removed " + removedRoom.getRoomName());
-
-	        return removedRoom;
-
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	        return null;
-	    }
-	}
+//
+//	@Override
+//	public Room removeRoom(String roomId) {
+//	    try {
+//	        if (!Files.exists(DatabaseUtils.roomsFilePath)) {
+//	            return null; //no db
+//	        }
+//
+//	        List<String> lines = Files.readAllLines(DatabaseUtils.roomsFilePath);
+//	        Room removedRoom = null;
+//
+//	        // find room to remove
+//	        for (int i = 0; i < lines.size(); i++) {
+//	            String[] parts = lines.get(i).split(",");
+//	            if (parts.length > 0 && parts[0].equals(roomId)) {
+//	                removedRoom = new Room(lines.get(i)); // get room that is being removed
+//	                lines.remove(i);
+//	                break;
+//	            }
+//	        }
+//
+//	        // rewrite the csv without the line we are removing
+//	        Files.write(
+//	            DatabaseUtils.roomsFilePath,
+//	            lines,
+//	            StandardOpenOption.CREATE,
+//	            StandardOpenOption.TRUNCATE_EXISTING
+//	        );
+//	        
+//	        System.out.println("removed " + removedRoom.getRoomName());
+//
+//	        return removedRoom;
+//
+//	    } catch (IOException ex) {
+//	        ex.printStackTrace();
+//	        return null;
+//	    }
+//	}
 
 
 
@@ -605,6 +598,38 @@ public class CSVAdapter implements ICSVRepository{
 	    }
 
 	    return bookings;
+	}
+
+
+
+
+	@Override
+	public Booking getBookingById(String bookingId) {
+	    Path path = DatabaseUtils.bookingFilePath;
+
+	    if (!Files.exists(path)) {
+	        return null; 
+	    }
+
+	    try (BufferedReader br = Files.newBufferedReader(path)) {
+	        String line;
+	        while ((line = br.readLine()) != null) {
+	            if (line.isBlank()) continue; // skip empty lines
+	            try {
+	                Booking booking = new Booking(line);
+	                if (booking.getRoomId().equals(bookingId)) {
+	                    return booking; // only return if id matches
+	                }
+	            } catch (Exception ex) {
+	                System.err.println("Failed to parse booking: " + line);
+	                // skip invalid rows
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    return null; // not found
 	}
 
 

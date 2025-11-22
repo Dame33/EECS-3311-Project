@@ -72,7 +72,7 @@ public class RegisterController implements Initializable {
         });
 
         // get list of account types
-        ArrayList<AccountRole> accountRoles = mediator.getAccountRoles();
+        List<AccountRole> accountRoles = mediator.getAccountRoles();
         comboBox.getItems().addAll(accountRoles);
 
         button_Register.setOnAction(event -> registerUser(event));
@@ -129,14 +129,7 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        User user = mediator.createAccount(
-                password,
-                email,
-                role,
-                firstName,
-                lastName,
-                "User"
-        );
+        User user = mediator.createAccount(password, email, role, firstName, lastName);
 
         if (user != null) {
             Session.setUser(user);

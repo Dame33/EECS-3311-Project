@@ -36,4 +36,6 @@ public interface ICSVRepository {
 	Room upsertRoom(Room room);
 	Room removeRoom(String roomId);
 	ArrayList<Booking> getBookingsByRoomAndDate(String roomId, LocalDate date);
+	Booking getBookingById(String bookingId);
+	String getAccountRoleRowById(String id);
 }

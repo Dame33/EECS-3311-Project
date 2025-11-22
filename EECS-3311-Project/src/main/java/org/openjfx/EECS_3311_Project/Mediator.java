@@ -2,6 +2,7 @@ package org.openjfx.EECS_3311_Project;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.openjfx.EECS_3311_Project.managers.BookingManager;
@@ -19,10 +20,9 @@ public class Mediator {
     private static Mediator instance;
 //
 //    private Session session;
-   private final BookingManager bookingManager = new BookingManager();
-    // private final RoomManager roomManager;
+    	private final BookingManager bookingManager = new BookingManager();
      private final UserManager userManager = new UserManager();
-     private final RoomManger roomManager = new RoomManger();
+     private final RoomManager roomManager = new RoomManager();
     // private final PaymentManager paymentManager;
      
      
@@ -33,10 +33,8 @@ public class Mediator {
  		
  	}
 	
-	public User createAccount(String password, String email, AccountRole accountRole, String firstName, String lastName, String userType) {
-		
-		String id = UUID.randomUUID().toString();
-		User user = new User(id, firstName,lastName,email,password,userType,accountRole);
+	public User createAccount(String password, String email, AccountRole accountRole, String firstName, String lastName) {
+		User user = UserFactory.createNew(firstName,lastName,email,password,accountRole);
 		return userManager.createAccount(user); 
 	}
 
@@ -49,11 +47,11 @@ public class Mediator {
 		
 	}
 
-	public ArrayList<AccountRole> getAccountRoles() {
+	public List<AccountRole> getAccountRoles() {
 		return userManager.getAccountRoles();
 	}
 
-	public ArrayList<Room> getAllRooms() {
+	public List<Room> getAllRooms() {
 		return roomManager.getAllRooms();
 	}
 
@@ -63,7 +61,7 @@ public class Mediator {
 	}
 
 	public Room removeRoom(Room room) {
-		return roomManager.removeRoom(room.getRoomId());
+		return roomManager.removeRoom(room);
 		
 	}
 
