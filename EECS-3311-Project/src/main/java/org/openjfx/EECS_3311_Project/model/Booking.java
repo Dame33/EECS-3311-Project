@@ -108,17 +108,11 @@ public class Booking implements ICSVDataObject {
     public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
     public LocalDateTime getCheckIn() { return checkInTime; }
     public void setCheckIn(LocalDateTime checkInTime) { this.checkInTime = checkInTime; }
-<<<<<<< HEAD
     public String getName() {
     	return name;
     }
     
-=======
-    public String getName()
-    {
-        return this.name;
-    }
->>>>>>> refs/heads/detached
+
     @Override
     public String toCSVRow() {
         String attendees = "[]";

@@ -1,5 +1,7 @@
 package org.openjfx.EECS_3311_Project.model;
 
+import java.util.UUID;
+
 public class Payment implements ICSVDataObject{
 	private String id;
     private Double amount;
@@ -18,7 +20,7 @@ public class Payment implements ICSVDataObject{
         String[] tokens = csvRow.split(",");
         this.amount = Double.parseDouble(tokens[0]);
         this.cardNumber = tokens[1];
-        this.userId = Boolean.parseBoolean(tokens[2]);
+        this.userId = tokens[2];
     }
     
 	public String toCSVRow() {

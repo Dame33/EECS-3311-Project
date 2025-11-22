@@ -11,11 +11,9 @@ import java.util.List;
 
 import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
-import org.openjfx.EECS_3311_Project.model.Double;
 import org.openjfx.EECS_3311_Project.model.Room;
 import org.openjfx.EECS_3311_Project.model.Payment;
 import org.openjfx.EECS_3311_Project.model.Status;
-import org.openjfx.EECS_3311_Project.model.String;
 import org.openjfx.EECS_3311_Project.model.User;
 
 public class CSVAdapter implements ICSVRepository{
@@ -640,7 +638,7 @@ public class CSVAdapter implements ICSVRepository{
 		            StandardOpenOption.TRUNCATE_EXISTING
 		        );
 
-		        return room;
+		        return payment;
 
 		    } catch (IOException ex) {
 		        ex.printStackTrace();
