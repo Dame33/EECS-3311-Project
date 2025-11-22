@@ -24,27 +24,29 @@ public class CECController {
 
 	@FXML
 	public void getAdminsEditorPage() {
-		try {
-			Node adminPage = FXMLLoader
-					.load(getClass().getResource("/fxml/cectools/cec_admins.fxml"));
+		 try {
+		        FXMLLoader loader = new FXMLLoader(
+		            getClass().getResource("/fxml/cectools/cec_admins.fxml")
+		        );
 
-			contentArea.getChildren().setAll(adminPage);
+		        Node adminPage = loader.load();
 
-			// link the VBox inside the loaded FXML
-			adminsList = (VBox) adminPage.lookup("#adminsList");
+		        AdminsPageController controller = loader.getController();
 
-			// retrieve all users
-			ArrayList<User> users = Mediator.getInstance().getUserManager().getAllUsers();
+		        contentArea.getChildren().setAll(adminPage);
 
-			// create rows
-			for (User u : users) {
-				HBox row = createAdminRow(u);
-				adminsList.getChildren().add(row);
-			}
+		        // retrieve all users
+		        ArrayList<User> users = Mediator.getInstance()
+		                                        .getAllUsers();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		        for (User u : users) {
+		            HBox row = createAdminRow(u);
+		            controller.adminsList.getChildren().add(row);
+		        }
+
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
 	}
 
 	private HBox createAdminRow(User user) {

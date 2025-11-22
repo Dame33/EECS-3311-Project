@@ -16,16 +16,25 @@ public class AccountRole implements ICSVDataObject{
 	}
 	
 	public AccountRole(String csvRow) {
-		String[] parts=csvRow.split(",");
-		try{
-			this.id = parts[0];
-			this.roleName= parts[1];
-			this.hourlyRate = Double.parseDouble(parts[2]);
-		}
-		catch(Exception e) {
-			throw new IllegalArgumentException("Invalid CSV row: " + csvRow);
-		}
+	    if (csvRow == null || csvRow.trim().isEmpty()) {
+	        throw new IllegalArgumentException("Empty CSV row for AccountRole");
+	    }
+
+	    String[] parts = csvRow.split(",");
+	    if (parts.length != 3) {
+	        throw new IllegalArgumentException("Invalid CSV row for AccountRole: " + csvRow);
+	    }
+
+	    this.id = parts[0].trim();
+	    this.roleName = parts[1].trim();
+
+	    try {
+	        this.hourlyRate = Double.parseDouble(parts[2].trim());
+	    } catch (NumberFormatException e) {
+	        throw new IllegalArgumentException("Invalid hourly rate: " + parts[2]);
+	    }
 	}
+	
 	public String getId() {
 		return id;
 	}
@@ -51,8 +60,7 @@ public class AccountRole implements ICSVDataObject{
 	}
 	@Override
 	public String toCSVRow() {
-		// TODO Auto-generated method stub
-		return null;
+		return id + "," + roleName + "," + hourlyRate;
 	}
 	
 

@@ -476,8 +476,7 @@ public class CSVAdapter implements ICSVRepository{
 	        String line;
 
 	        while ((line = br.readLine()) != null) {
-	            if (line.trim().isEmpty()) continue;
-
+	            if (line == null || line.trim().isEmpty()) continue;
 	            AccountRole role = new AccountRole(line);
 
 	            roles.add(role);
@@ -488,6 +487,7 @@ public class CSVAdapter implements ICSVRepository{
 	    }
 
 	    return roles;
+	    
 	}
 
 

@@ -67,7 +67,7 @@ public class NavbarController {
     }
 
     private void onCECToolsClicked(ActionEvent event) {
-        System.out.println("CEC Tools clicked");
+    	SceneManager.changeScene(event, "cectools/cec_tools.fxml", "CEC Tools");
     }
 
     private void onAdminToolsClicked(ActionEvent event) {
