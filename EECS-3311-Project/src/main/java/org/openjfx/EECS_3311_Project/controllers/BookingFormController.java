@@ -74,7 +74,7 @@ public class BookingFormController {
     	    // combine with the selected date
     	    LocalDateTime startDateTime = LocalDateTime.of(selectedDate, startTime);
     	    LocalDateTime endDateTime = LocalDateTime.of(selectedDate, endTime);
-    	    Booking newBooking = new Booking( selectedRoom.getId(), Session.getUser().getId(), startDateTime, endDateTime);
+    	    Booking newBooking = new Booking(selectedRoom.getId(), Session.getUser().getId(), startDateTime, endDateTime, "");
 
     	    Session.setEditBooking(newBooking);
     	    Session.isEditingBooking = false ; // creating new booking

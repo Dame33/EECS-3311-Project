@@ -92,7 +92,7 @@ public class Mediator {
 	
 	public List<Booking> allFutureHostBookings(String userId)
 	{
-		return bookingManager.allFutureHostBookings(userId);
+		return bookingManager.allVisibleHostBookings(userId);
 	}
 	
 	public List<Booking> getAllInvitedBookings(String userId)
@@ -102,7 +102,7 @@ public class Mediator {
 	
 	public List<Booking> allFutureInvitedBookings(String userId)
 	{
-		return bookingManager.allFutureInvitedBookings(userId);
+		return bookingManager.allVisibleInvitedBookings(userId);
 	}
 
 	public Booking getBookingById(String bookingId) {
@@ -155,15 +155,17 @@ public class Mediator {
 
 	public Payment createPaymentRecord(Payment payment) {
 		return paymentManager.createRecord(payment);
-		
 	}
 	
-	public Payment upsertPaymentRecord(Payment payment) {
-		return paymentManager.upsertRecord(payment);
-	}
+//	public Payment upsertPaymentRecord(Payment payment) {
+//		return paymentManager.upsertRecord(payment);
+//	}
 	
 	public AccountRoleManager getAccountRoleManager() {
 	    return accountRoleManager;
 	}
 	
+	public Payment getPaymentFromBooking(Booking booking) {
+		return bookingManager.getPaymentFromBooking(booking);
+	}
 }

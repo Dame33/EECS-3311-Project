@@ -127,18 +127,20 @@ public class BookingView extends ListCell<Booking>
                  confirmAlert2.showAndWait().ifPresent(response -> {
                 	 if(response == ButtonType.OK) {
                 		 LocalDateTime now = LocalDateTime.now();
-                		 LocalDateTime startTime = currentBooking.getStartTime();
                 		 
                 		 //boolean depositValid = !now.isAfter(startTime.plusMinutes(30));
                 		 //tracks if deposit valid or not
                 		 
                 		 //here
                 		 
+
+                		 Payment payment = Mediator.getInstance().getPaymentFromBooking(currentBooking);
+                		 System.out.println(payment.getId());
+                		 
                 		 currentBooking.checkIn();
                 		 currentBooking.setCheckInTime(now);
                 		 Mediator.getInstance().saveBooking(currentBooking);
                 		 Session.setEditBooking(currentBooking);
-                		 
                 		 
                 		 Alert successAlert2 = new Alert(Alert.AlertType.INFORMATION);
                 		 successAlert2.setTitle("Checked into Booking");
@@ -147,9 +149,7 @@ public class BookingView extends ListCell<Booking>
                 		 successAlert2.showAndWait();
                 		 checkInButton.setVisible(false);
                          checkInButton.setManaged(false);
-                		 getListView().refresh();
-                         //SceneManager.changeScene(event, "BookingEdit.fxml", "Edit Booking");
-                		 
+                		 getListView().refresh();             		 
                 	 }
                  });
                  
@@ -224,7 +224,10 @@ public class BookingView extends ListCell<Booking>
             roomLabel.setText(newBooking.getRoomId());
             timeLabel.setText(newBooking.getStartTime().format(TIME_FORMATTER) + " - " + newBooking.getEndTime().format(TIME_FORMATTER));
             
-            boolean showCheckIn = !Boolean.TRUE.equals(newBooking.getIsCheckedIn());
+            LocalDateTime now = LocalDateTime.now();
+
+            boolean showCheckIn = !Boolean.TRUE.equals(newBooking.getIsCheckedIn()) && (now.isAfter(newBooking.getStartTime()));
+            
             checkInButton.setVisible(showCheckIn);
             checkInButton.setManaged(showCheckIn);
             

@@ -1,6 +1,7 @@
 package org.openjfx.EECS_3311_Project.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
 
@@ -91,10 +92,15 @@ public class User implements ICSVDataObject {
 		return bookings;
 	}
 	
-	public ArrayList<Booking> getFutureBookings() {
+	public ArrayList<Booking> getVisibleBookings() {
 		ArrayList<Booking> futureBookings = bookings.stream()
-	    .filter(b -> b.getStartTime().isAfter(LocalDateTime.now()))
+	    .filter(b ->
+        b.getStartTime().isAfter(LocalDateTime.now().minusMinutes(30)) ||
+        (b.getIsCheckedIn() && b.getEndTime().isAfter(LocalDateTime.now()))
+	    )
+	    .sorted(Comparator.comparing(Booking::getStartTime))
 	    .collect(Collectors.toCollection(ArrayList::new));
+		
 		
 		return futureBookings;
 	}

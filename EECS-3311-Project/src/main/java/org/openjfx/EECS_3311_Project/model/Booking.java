@@ -45,6 +45,7 @@ public class Booking implements ICSVDataObject {
         this.checkInTime = checkInToken.isEmpty() ? null : LocalDateTime.parse(checkInToken);
 
         this.studentOrOrganizationId = tokens[9].trim();
+
         if (tokens.length > 10 && !tokens[10].trim().isEmpty()) {
         	this.cancelled = Boolean.parseBoolean(tokens[10].trim());
         } 
@@ -54,7 +55,7 @@ public class Booking implements ICSVDataObject {
     }
 
 
-    public Booking(String roomId, String hostId, LocalDateTime startTime, LocalDateTime endTime) {
+    public Booking(String roomId, String hostId, LocalDateTime startTime, LocalDateTime endTime, String paymentId) {
     	this.id = UUID.randomUUID().toString();
     	this.roomId = roomId;
     	this.name = "New Meeting";
@@ -156,8 +157,7 @@ public class Booking implements ICSVDataObject {
 	public void setCheckInTime(LocalDateTime checkInTime) {
 		this.checkInTime = checkInTime;
 	}
-
-
+	
     public String toCSVRow() {
         String attendees = "[]";
         if (!attendeeIds.isEmpty()) {

@@ -1,9 +1,14 @@
 package org.openjfx.EECS_3311_Project.managers;
 import org.openjfx.EECS_3311_Project.csv.BookingCSVOperations;
+import org.openjfx.EECS_3311_Project.csv.PaymentCSVOperations;
 import org.openjfx.EECS_3311_Project.model.Booking;
+import org.openjfx.EECS_3311_Project.model.Payment;
+import org.openjfx.EECS_3311_Project.model.User;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +16,7 @@ import java.util.Optional;
 public class BookingManager {
 
 	private final BookingCSVOperations bookingCSV = new BookingCSVOperations();
-	
+	private final PaymentCSVOperations paymentCSV = new PaymentCSVOperations();
 	
 	public BookingManager() {
 	}
@@ -162,13 +167,17 @@ public class BookingManager {
 		return bookingCSV.readMany((booking, cols) -> booking.getHostId().equals(userId));
 	}
 	
-	public List<Booking> allFutureHostBookings(String userId) {
+	public List<Booking> allVisibleHostBookings(String userId) {
 		List<Booking> allHostBookings = getAllHostBookings(userId);
-		List<Booking> allFutureHostBookings = allHostBookings.stream()
-			    .filter(b -> b.getStartTime().isAfter(LocalDateTime.now()))
+		List<Booking> allVisibleHostBookings = allHostBookings.stream()
+			    .filter(b ->
+		        b.getStartTime().isAfter(LocalDateTime.now().minusMinutes(30)) ||
+		        (b.getIsCheckedIn() && b.getEndTime().isAfter(LocalDateTime.now()))
+			    )
+			    .sorted(Comparator.comparing(Booking::getStartTime))
 			    .toList();
 		
-		return allFutureHostBookings;
+		return allVisibleHostBookings;
 	}
 	
 	public List<Booking> getAllInvitedBookings(String userId)
@@ -176,14 +185,18 @@ public class BookingManager {
 		return bookingCSV.readMany((booking, cols) -> booking.getAttendeeIds().contains(userId));
 	}
 	
-	public List<Booking> allFutureInvitedBookings(String userId) {
+	public List<Booking> allVisibleInvitedBookings(String userId) {
 		List<Booking> allHostBookings = getAllInvitedBookings(userId);
 		
-		List<Booking> allFutureHostBookings = allHostBookings.stream()
-			    .filter(b -> b.getStartTime().isAfter(LocalDateTime.now()))
+		List<Booking> allVisibleHostBookings = allHostBookings.stream()
+			    .filter(b ->
+		        b.getStartTime().isAfter(LocalDateTime.now().minusMinutes(30)) ||
+		        (b.getIsCheckedIn() && b.getEndTime().isAfter(LocalDateTime.now()))
+			    )
+			    .sorted(Comparator.comparing(Booking::getStartTime))
 			    .toList();
 		
-		return allFutureHostBookings;
+		return allVisibleHostBookings;
 	}
 	
 	
@@ -219,16 +232,20 @@ public class BookingManager {
 		return latestEnd;
 	}
 	
-	
-
-
 	public Booking cancelBooking(Booking booking) {
 		bookingCSV.delete(booking);
 		booking.setCancelled(true);
 		return booking;
 	}
 	
-
-
-
+	public Payment getPaymentFromBooking(Booking booking) {
+		String bookingId = booking.getId();
+		Optional<Payment> paymentOpt =  paymentCSV.readOne((payment, cols) -> payment.getBookingId().contains(bookingId));
+	    if (paymentOpt.isPresent()) {
+	        Payment payment = paymentOpt.get();
+	        return payment;
+	    }
+	    
+		return null;
+	}
 }

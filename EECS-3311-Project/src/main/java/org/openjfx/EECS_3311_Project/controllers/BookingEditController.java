@@ -192,8 +192,6 @@ public class BookingEditController implements Initializable {
         modalStage.showAndWait();
         
         SceneManager.changeScene(event, "HomePage.fxml", "Main Menu");
-        
-       
     }
     
     
@@ -243,11 +241,8 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-            	mediator.saveBooking(currentBooking);
-            	Session.getUser().addBooking(currentBooking);
-            	mediator.saveUser(Session.getUser());
-            	
-            	Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
+            	bookingController.saveBooking(currentBooking, Session.getUser());
+            	Payment payment = new Payment(price, parseCard(card), Session.getUser().getId(), currentBooking.getId());
                 mediator.createPaymentRecord(payment);
                 
             	modalStage.close();
@@ -515,11 +510,9 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-            	mediator.saveBooking(currentBooking);
-            	Session.getUser().addBooking(currentBooking);
-            	mediator.saveUser(Session.getUser());
-            	
-            	Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
+            	bookingController.saveBooking(currentBooking, Session.getUser());
+ 
+            	Payment payment = new Payment(price, parseCard(card), Session.getUser().getId(), currentBooking.getId());
                 mediator.createPaymentRecord(payment);
                 
             	modalStage.close();
@@ -580,10 +573,8 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-            	mediator.saveBooking(currentBooking);
-            	Session.getUser().addBooking(currentBooking);
-            	mediator.saveUser(Session.getUser());
-                Payment payment = new Payment(price, parseInstitutional(InstitutionalBilling), Session.getUser().getId());
+            	bookingController.saveBooking(currentBooking, Session.getUser());
+                Payment payment = new Payment(price, parseInstitutional(InstitutionalBilling), Session.getUser().getId(), currentBooking.getId());
                 
                 mediator.createPaymentRecord(payment);
                 modalStage.close();
