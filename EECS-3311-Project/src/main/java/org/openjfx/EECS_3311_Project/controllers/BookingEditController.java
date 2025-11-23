@@ -60,13 +60,16 @@ public class BookingEditController implements Initializable {
     private LocalDateTime latestEndTime;
     
     private final List<User> possibleInvitees = mediator.getPossibleInvitees(Session.getUser().getId());
-
+    
+    private BookingController bookingController;  // <-- DECORATED LOGIC
     private Booking currentBooking;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Booking booking = Session.getEditBooking();
         User user = Session.getUser();
+        
+        bookingController = new BookingController();
         
         this.currentBooking = booking;
         // Safety check to prevent crashes if booking is null
@@ -91,10 +94,9 @@ public class BookingEditController implements Initializable {
 
         hostEmail.setText(user.getEmail());
 
-        double hoursBetween = Duration.between(start, end).toMinutes() / 60.0;
         AccountRole user_type = user.getAccountRole();
 
-        price = booking.calculateDepositPrice(user_type);
+        price = bookingController.computePrice(booking, user_type);
 
         String bookingPriceText = String.format("$ %.2f", price);
         bookingPrice.setText(bookingPriceText);
@@ -136,11 +138,7 @@ public class BookingEditController implements Initializable {
         currentBooking.setStudentOrOrganizationId(studentId);
 
         if(Session.isEditingBooking) {
-        	mediator.saveBooking(currentBooking);
-            // need to also save the user.
-            Session.getUser().addBooking(currentBooking);
-            mediator.saveUser(Session.getUser());
-        	
+        	bookingController.saveBooking(currentBooking, Session.getUser());
         	SceneManager.changeScene(event, "HomePage.fxml", "Main Menu"); 
         	} // skip payment
         
@@ -244,10 +242,7 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-                mediator.saveBooking(currentBooking);
-                // need to also save the user.
-                Session.getUser().addBooking(currentBooking);
-                mediator.saveUser(Session.getUser());
+            	bookingController.saveBooking(currentBooking, Session.getUser());                
                 modalStage.close();
                 Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
                 
@@ -421,15 +416,13 @@ public class BookingEditController implements Initializable {
         // we can extend up to two hours
         
         if (!extension.isZero()) {
-            currentBooking.setEndTime(currentBooking.getEndTime().plus(extension));
-            mediator.saveBooking(currentBooking);
+            bookingController.extendBooking(currentBooking, extension);
 
             LocalDateTime start = currentBooking.getStartTime();
             LocalDateTime end = currentBooking.getEndTime();
             dateTime.setText(start.format(timeFormatter) + " - " + end.format(timeFormatter));
 
-            double hoursBetween = Duration.between(start, end).toMinutes() / 60.0;
-            price = currentBooking.calculateDepositPrice(Session.getUser().getAccountRole());
+            price = bookingController.computePrice(currentBooking, Session.getUser().getAccountRole());
             bookingPrice.setText(String.format("$ %.2f", price));
 
             showAlert("Booking extended", "You've extended your booking successfully!",  
@@ -517,10 +510,6 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-                mediator.saveBooking(currentBooking);
-                // need to also save the user.
-                Session.getUser().addBooking(currentBooking);
-                mediator.saveUser(Session.getUser());
                 modalStage.close();
                 Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
                 
@@ -581,10 +570,7 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-                mediator.saveBooking(currentBooking);
-                // need to also save the user.
-                Session.getUser().addBooking(currentBooking);
-                mediator.saveUser(Session.getUser());
+            	bookingController.saveBooking(currentBooking, Session.getUser());
                 modalStage.close();
                 Payment payment = new Payment(price, parseInstitutional(InstitutionalBilling), Session.getUser().getId());
                 

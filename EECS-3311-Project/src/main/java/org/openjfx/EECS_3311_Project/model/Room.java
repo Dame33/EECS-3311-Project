@@ -22,7 +22,10 @@ public class Room implements ICSVDataObject, Observer {
         this.buildingName = tokens[4];
     }
     
-    
+	public String getId() {
+		return roomId;
+	}
+
     public String getRoomId() {
 		return roomId;
 	}

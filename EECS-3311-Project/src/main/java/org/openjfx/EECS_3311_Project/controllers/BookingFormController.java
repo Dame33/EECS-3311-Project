@@ -14,11 +14,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -219,23 +221,43 @@ public class BookingFormController {
 
         roomPicker.getChildren().add(scroll);
     }
+    
     private void showTimePicker(LocalDate date) {
-    	selectedTimes.clear();
-    	timePicker.getChildren().clear(); // remove previous times
-    	bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getId(), date);
+        selectedTimes.clear();
+        timePicker.getChildren().clear();
+        bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getId(), date);
 
-    	Label roomLabel = new Label((selectedRoom != null ? selectedRoom.getRoomName() : "None"));
-	    roomLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-	    timePicker.getChildren().add(roomLabel);
-    	
+        Label roomLabel = new Label((selectedRoom != null ? selectedRoom.getRoomName() : "None"));
+        roomLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+        timePicker.getChildren().add(roomLabel);
+
         ScrollPane scroll = new ScrollPane();
-        VBox timesContainer = new VBox(5); 
+        VBox timesContainer = new VBox(5);
         timesContainer.setPadding(new Insets(10));
 
-        LocalTime start = LocalTime.of(7, 0);  // booking times start at 7
-        LocalTime end = LocalTime.of(21, 30);   // booking times end at 21:30
+        LocalTime start = LocalTime.of(7, 0);
+        LocalTime end   = LocalTime.of(21, 30);
 
+        LocalDate today = LocalDate.now();
         LocalTime current = start;
+
+        // If user selected a past date, you can bail out or show a message
+        if (date.isBefore(today)) {
+            // optionally show "no times available"
+            scroll.setContent(timesContainer);
+            timePicker.getChildren().add(scroll);
+            return;
+        }
+
+        // Only skip past times if the selected date is today
+        if (date.isEqual(today)) {
+            LocalTime nowRoundedUp = roundUpToNearest30Min(LocalTime.now());
+            if (nowRoundedUp.isAfter(start)) {
+                current = nowRoundedUp;
+            }
+        }
+        // else (tomorrow or later) keep current = 7:00
+
         while (!current.isAfter(end)) {
             StackPane timeSlot = createTimeSlot(current, date);
             timesContainer.getChildren().add(timeSlot);
@@ -244,7 +266,6 @@ public class BookingFormController {
 
         scroll.setContent(timesContainer);
         scroll.setFitToWidth(true);
-
         timePicker.getChildren().add(scroll);
     }
     
@@ -376,5 +397,23 @@ public class BookingFormController {
         for (Node n : ((VBox)((ScrollPane)timePicker.getChildren().get(0)).getContent()).getChildren()) {
             n.setStyle("");
         }
+    }
+
+    private LocalTime roundUpToNearest30Min(LocalTime time) {
+        int minute = time.getMinute();
+        int second = time.getSecond();
+        int nano = time.getNano();
+
+        // Total minutes + fractional from seconds/nanos
+        long totalMinutes = minute + (second > 0 || nano > 0 ? 1 : 0);
+
+        int remainder = minute % 30;
+        if (remainder != 0 || second != 0 || nano != 0) {
+            time = time.plusMinutes(30 - remainder).truncatedTo(ChronoUnit.MINUTES);
+        } else {
+            time = time.truncatedTo(ChronoUnit.MINUTES);
+        }
+
+        return time;
     }
 }
