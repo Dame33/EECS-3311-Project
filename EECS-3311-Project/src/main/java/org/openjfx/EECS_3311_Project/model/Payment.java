@@ -18,7 +18,7 @@ public class Payment implements ICSVDataObject{
     }
     
     public Payment(String csvRow) {
-        // amount, lastDigitsOfCard, userId
+        // amount, lastDigitsOfCard, userId, bookingId
         String[] tokens = csvRow.split(",");
         this.id = tokens[0].trim();
         this.amount = Double.parseDouble(tokens[1].trim());
@@ -32,7 +32,6 @@ public class Payment implements ICSVDataObject{
 		// id, amount, lastDigitsOfCard, userId
 		return String.join(",", this.id, ""+this.amount, this.cardNumber, this.userId, this.bookingId);
 	}
-	
     
     public double getAmount() {
 		return amount;

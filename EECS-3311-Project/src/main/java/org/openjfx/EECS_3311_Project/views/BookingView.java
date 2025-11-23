@@ -197,7 +197,8 @@ public class BookingView extends ListCell<Booking>
             
             LocalDateTime now = LocalDateTime.now();
             
-            boolean showCheckIn = !Boolean.TRUE.equals(newBooking.getIsCheckedIn()); //&& (now.isAfter(newBooking.getStartTime()));
+            // comment out the second logical conditions
+            boolean showCheckIn = !Boolean.TRUE.equals(newBooking.getIsCheckedIn()) && (now.isAfter(newBooking.getStartTime()));
             
             checkInButton.setVisible(showCheckIn);
             checkInButton.setManaged(showCheckIn);
@@ -214,7 +215,7 @@ public class BookingView extends ListCell<Booking>
     private void showPaymentModal(ActionEvent event) {
      	Booking currentBooking = getItem();
      	Payment payment = mediator.getPaymentFromBooking(currentBooking);
-     	double subtotalPrice = mediator.computePrice(currentBooking, Session.getUser().getAccountRole());
+     	double subtotalPrice = payment.getAmount();
      	double taxedPrice = subtotalPrice * tax;
      	
         javafx.stage.Stage modalStage = new javafx.stage.Stage();
