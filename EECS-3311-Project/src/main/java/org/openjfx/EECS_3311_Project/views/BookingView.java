@@ -119,8 +119,8 @@ public class BookingView extends ListCell<Booking>
         	 if (currentBooking.getIsCheckedIn() == false) {
                  Alert confirmAlert2 = new Alert(Alert.AlertType.CONFIRMATION);
                  confirmAlert2.setHeaderText("Check into " + currentBooking.getRoomId() + " for " + currentBooking.getName() + "?");
-                 confirmAlert2.setContentText("Meeting Begins on: " + currentBooking.getStartTime().format(DateTimeFormatter.ofPattern("MMM d, yyyy")) + " from"
-                 + currentBooking.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " to" 
+                 confirmAlert2.setContentText("Meeting Begins on: " + currentBooking.getStartTime().format(DateTimeFormatter.ofPattern("MMM d, yyyy")) + " from "
+                 + currentBooking.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " to " 
                 		 + currentBooking.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm"))
                  );
                  
@@ -211,7 +211,7 @@ public class BookingView extends ListCell<Booking>
     {
         super.updateItem(newBooking, isEmpty);
 
-        if (isEmpty || newBooking == null)
+        if (isEmpty || newBooking == null || newBooking.isCancelled())
         {
             setText(null);
             setGraphic(null);

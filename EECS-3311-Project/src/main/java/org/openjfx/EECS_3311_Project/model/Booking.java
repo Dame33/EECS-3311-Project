@@ -16,6 +16,7 @@ public class Booking implements ICSVDataObject {
     private LocalDateTime endTime;
     private LocalDateTime checkInTime;
 	private String studentOrOrganizationId;
+	private boolean cancelled = false;
     
     public Booking(String csvRow) {
         String[] tokens = csvRow.split(",");
@@ -44,6 +45,12 @@ public class Booking implements ICSVDataObject {
         this.checkInTime = checkInToken.isEmpty() ? null : LocalDateTime.parse(checkInToken);
 
         this.studentOrOrganizationId = tokens[9].trim();
+        if (tokens.length > 10 && !tokens[10].trim().isEmpty()) {
+        	this.cancelled = Boolean.parseBoolean(tokens[10].trim());
+        } 
+        else {
+        	this.cancelled = false;
+        }
     }
 
 
@@ -57,6 +64,8 @@ public class Booking implements ICSVDataObject {
         this.startTime = startTime;
         this.endTime = endTime;
         this.checkInTime = null;
+        this.studentOrOrganizationId = "";
+        this.cancelled = false;
     }
 
     public String getId() {
@@ -158,7 +167,7 @@ public class Booking implements ICSVDataObject {
         String checkedTime = checkInTime != null ? checkInTime.toString() : "";
 
         return String.join(",", id, roomId, name, checkedInStr, hostId, attendees,
-                startTime.toString(), endTime.toString(), checkedTime, studentOrOrganizationId);
+                startTime.toString(), endTime.toString(), checkedTime, studentOrOrganizationId, Boolean.toString(cancelled));
     }
     
     public double calculateDepositPrice(AccountRole user_type) {
@@ -192,5 +201,11 @@ public class Booking implements ICSVDataObject {
 		this.setIsCheckedIn(true);
 		this.setCheckInTime(LocalDateTime.now());
 	}
-	
+	public boolean isCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
 }

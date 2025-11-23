@@ -228,7 +228,23 @@ public class BookingFormController {
         bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getId(), date);
         
         //add for loop, check if meeting started, after 30 min if no check in mediator.bookingcancel
-
+        List<Booking> stillActive = new ArrayList<>();
+        for(Booking b : bookingsForDay) {
+        	LocalDateTime now = LocalDateTime.now();
+        	boolean checkedIn = Boolean.TRUE.equals(b.getIsCheckedIn());
+        	LocalDateTime bookingStart = b.getStartTime();
+        	
+        	if(!checkedIn && now.isAfter(bookingStart.plusMinutes(30))) {
+        		mediator.cancelBooking(b);
+        	}
+        	else {
+        		stillActive.add(b);
+        	}
+        	
+        	
+        }
+        bookingsForDay = stillActive;
+        
         Label roomLabel = new Label((selectedRoom != null ? selectedRoom.getRoomName() : "None"));
         roomLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         timePicker.getChildren().add(roomLabel);

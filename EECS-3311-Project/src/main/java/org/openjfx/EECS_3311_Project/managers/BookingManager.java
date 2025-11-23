@@ -205,6 +205,7 @@ public class BookingManager {
 
 	public Booking cancelBooking(Booking booking) {
 		bookingCSV.delete(booking);
+		booking.setCancelled(true);
 		return booking;
 	}
 	
