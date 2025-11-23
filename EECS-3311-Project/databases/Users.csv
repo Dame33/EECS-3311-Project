@@ -9,4 +9,4 @@ USER1,Alice,Smith,alice.smith@example.com,123,User,[],2
 USER2,Bob,Johnson,bob.johnson@example.com,123,User,[],3
 USER3,Carol,Lee,carol.lee@example.com,123,User,[],1
 USER4,David,Brown,david.brown@example.com,123,User,[],0
-a5e169f3-eeb2-4823-8c4e-3a949e1f7163,Rowdy,Ringo,ringo,123,User,[5c02246c-76b2-4735-92b7-8d00801d0bf4],2
+a5e169f3-eeb2-4823-8c4e-3a949e1f7163,Rowdy,Ringo,ringo,123,User,[5c02246c-76b2-4735-92b7-8d00801d0bf4;ae5f4fd5-33ba-41af-9245-887ee711d2ab],2

@@ -225,7 +225,7 @@ public class BookingView extends ListCell<Booking>
         root.setPadding(new javafx.geometry.Insets(20));
         root.setStyle("-fx-background-color: #f0f0f0;");
 
-        Label subtotalPriceLabel = new Label(String.format("Your SubTotal: $%.2f", subtotalPrice));
+        Label subtotalPriceLabel = new Label(String.format("Your Subtotal: $%.2f", subtotalPrice));
         subtotalPriceLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
         
         Label taxedPriceLabel = new Label(String.format("Your Taxed Amount: $%.2f", taxedPrice));
