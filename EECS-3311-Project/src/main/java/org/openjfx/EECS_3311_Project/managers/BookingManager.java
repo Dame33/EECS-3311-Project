@@ -162,11 +162,30 @@ public class BookingManager {
 		return bookingCSV.readMany((booking, cols) -> booking.getHostId().equals(userId));
 	}
 	
+	public List<Booking> allFutureHostBookings(String userId) {
+		List<Booking> allHostBookings = getAllHostBookings(userId);
+		List<Booking> allFutureHostBookings = allHostBookings.stream()
+			    .filter(b -> b.getStartTime().isAfter(LocalDateTime.now()))
+			    .toList();
+		
+		return allFutureHostBookings;
+	}
+	
 	public List<Booking> getAllInvitedBookings(String userId)
 	{
 		return bookingCSV.readMany((booking, cols) -> booking.getAttendeeIds().contains(userId));
-		
 	}
+	
+	public List<Booking> allFutureInvitedBookings(String userId) {
+		List<Booking> allHostBookings = getAllInvitedBookings(userId);
+		
+		List<Booking> allFutureHostBookings = allHostBookings.stream()
+			    .filter(b -> b.getStartTime().isAfter(LocalDateTime.now()))
+			    .toList();
+		
+		return allFutureHostBookings;
+	}
+	
 	
 	public Booking getBookingById(String bookingId) {
 		Optional<Booking> bookingOpt = bookingCSV.readById(bookingId);

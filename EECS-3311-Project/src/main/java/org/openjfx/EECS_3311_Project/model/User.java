@@ -2,8 +2,7 @@ package org.openjfx.EECS_3311_Project.model;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
-
+import java.time.LocalDateTime;
 
 public class User implements ICSVDataObject {
 	private String id;
@@ -28,7 +27,7 @@ public class User implements ICSVDataObject {
 	    return null;
 	}
 	
-	public String toCSVRow() {// update to join by comma, added suppoort for bookings
+	public String toCSVRow() {// update to join by comma, added support for bookings
 		String roleId = (this.getAccountRole() == null || this.getAccountRole().getId() == null)
 		        ? ""
 		        : this.getAccountRole().getId();
@@ -90,6 +89,14 @@ public class User implements ICSVDataObject {
 
 	public ArrayList<Booking> getBookings() {
 		return bookings;
+	}
+	
+	public ArrayList<Booking> getFutureBookings() {
+		ArrayList<Booking> futureBookings = bookings.stream()
+	    .filter(b -> b.getStartTime().isAfter(LocalDateTime.now()))
+	    .collect(Collectors.toCollection(ArrayList::new));
+		
+		return futureBookings;
 	}
 
 	public void setBookings(ArrayList<Booking> bookings) {

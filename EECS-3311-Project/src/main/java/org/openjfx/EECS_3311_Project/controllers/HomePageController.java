@@ -60,14 +60,10 @@ public class HomePageController implements Initializable {
         lv_invitedBookingsListView.setCellFactory(param -> new BookingView(false));
         lv_invitedBookingsListView.setPlaceholder(new Label("No bookings yet"));
         
-        List<Booking> invitedBookingsList = new ArrayList<>();
-        invitedBookingsList = mediator.getAllInvitedBookings(Session.getUser().getId());
-
-        
         //set the data to the observable lists
       
-        ObservableList<Booking> hostBookings = FXCollections.observableArrayList(Session.getUser().getBookings());
-        ObservableList<Booking> invitedBookings = FXCollections.observableArrayList(mediator.getAllInvitedBookings(Session.getUser().getId()));
+        ObservableList<Booking> hostBookings = FXCollections.observableArrayList(Session.getUser().getFutureBookings());
+        ObservableList<Booking> invitedBookings = FXCollections.observableArrayList(mediator.allFutureInvitedBookings(Session.getUser().getId()));
         
    
         //load data into the view

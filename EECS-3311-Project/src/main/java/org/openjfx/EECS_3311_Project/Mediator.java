@@ -89,9 +89,20 @@ public class Mediator {
 	{
 		return bookingManager.getAllHostBookings(userId);
 	}
+	
+	public List<Booking> allFutureHostBookings(String userId)
+	{
+		return bookingManager.allFutureHostBookings(userId);
+	}
+	
 	public List<Booking> getAllInvitedBookings(String userId)
 	{
 		return bookingManager.getAllInvitedBookings(userId);
+	}
+	
+	public List<Booking> allFutureInvitedBookings(String userId)
+	{
+		return bookingManager.allFutureInvitedBookings(userId);
 	}
 
 	public Booking getBookingById(String bookingId) {
