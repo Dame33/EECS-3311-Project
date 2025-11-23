@@ -1,6 +1,7 @@
 package org.openjfx.EECS_3311_Project.managers;
 import org.openjfx.EECS_3311_Project.csv.BookingCSVOperations;
 import org.openjfx.EECS_3311_Project.csv.PaymentCSVOperations;
+import org.openjfx.EECS_3311_Project.model.AccountRole;
 import org.openjfx.EECS_3311_Project.model.Booking;
 import org.openjfx.EECS_3311_Project.model.Payment;
 import org.openjfx.EECS_3311_Project.model.User;
@@ -252,4 +253,8 @@ public class BookingManager {
 	    
 		return null;
 	}
+	
+    public double computePrice(Booking booking, AccountRole role) {
+        return booking.calculateDepositPrice(role);
+    }
 }

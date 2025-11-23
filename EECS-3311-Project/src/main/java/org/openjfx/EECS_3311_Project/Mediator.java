@@ -168,4 +168,8 @@ public class Mediator {
 	public Payment getPaymentFromBooking(Booking booking) {
 		return bookingManager.getPaymentFromBooking(booking);
 	}
+	
+	public double computePrice(Booking booking, AccountRole role) {
+		return booking.calculateDepositPrice(role);
+	}
 }

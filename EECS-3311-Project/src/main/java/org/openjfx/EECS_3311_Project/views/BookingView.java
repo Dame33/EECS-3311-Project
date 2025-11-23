@@ -2,11 +2,13 @@ package org.openjfx.EECS_3311_Project.views;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -36,6 +38,8 @@ public class BookingView extends ListCell<Booking>
     private final Region emptySpace;
     private static final double tax = 0.13;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mm a");
+    
+    private final Mediator mediator = Mediator.getInstance();
 
     public BookingView(boolean isHost)
     {
@@ -94,7 +98,7 @@ public class BookingView extends ListCell<Booking>
 
                 confirmAlert.showAndWait().ifPresent(response -> {
                     if (response == ButtonType.OK) {
-                        Mediator.getInstance().cancelBooking(currentBooking);
+                        mediator.cancelBooking(currentBooking);
                         Session.getUser().removeBooking(currentBooking);
 
                         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -128,18 +132,11 @@ public class BookingView extends ListCell<Booking>
                 	 if(response == ButtonType.OK) {
                 		 LocalDateTime now = LocalDateTime.now();
                 		 
-                		 //boolean depositValid = !now.isAfter(startTime.plusMinutes(30));
-                		 //tracks if deposit valid or not
-                		 
-                		 //here
-                		 
-
-                		 Payment payment = Mediator.getInstance().getPaymentFromBooking(currentBooking);
-                		 System.out.println(payment.getId());
+                   		 showPaymentModal(event);
                 		 
                 		 currentBooking.checkIn();
                 		 currentBooking.setCheckInTime(now);
-                		 Mediator.getInstance().saveBooking(currentBooking);
+                		 mediator.saveBooking(currentBooking);
                 		 Session.setEditBooking(currentBooking);
                 		 
                 		 Alert successAlert2 = new Alert(Alert.AlertType.INFORMATION);
@@ -158,33 +155,7 @@ public class BookingView extends ListCell<Booking>
         	
         }
         );
-        
-        //private void finalPayment(Booking booking, boolean valid) {
-        	
-        //}
-		/*
-		 * private void finalPayment(Booking booking, boolean valid) { AccountRole role
-		 * = Session.getUser().getAccountRole(); long totalMins =
-		 * Duration.between(booking.getStartTime(), booking.getEndTime()); double hours
-		 * = totalMins/60; double priceWithDeposit = booking.depositAndTotalPrice(role,
-		 * hours); double priceWithoutDeposit = booking.calculateTotalPrice(role,
-		 * hours); double charge; if(valid) { charge = priceWithDeposit;
-		 * 
-		 * } else { charge = priceWithoutDeposit; } double totalDue = charge * 1.13;
-		 * Alert paymentAlert = new Alert(Alert.AlertType.CONFIRMATION);
-		 * paymentAlert.setTitle("Finalize Payment");
-		 * paymentAlert.setHeaderText("Confirm final payment");
-		 * paymentAlert.setContentText(msg.toString());
-		 * 
-		 * Button paymentButton = new Button("Confirm Payment?");
-		 * paymentButton.setOnAction(event -> { if (event == ButtonType.OK) { Payment
-		 * payment = new Payment(charge); } });
-		 * 
-		 * }
-		 */
-        
-        
-        
+
         if(isHost)
         {
         	root = new HBox(10, card, emptySpace, checkInButton, editButton, cancelButton);
@@ -225,8 +196,8 @@ public class BookingView extends ListCell<Booking>
             timeLabel.setText(newBooking.getStartTime().format(TIME_FORMATTER) + " - " + newBooking.getEndTime().format(TIME_FORMATTER));
             
             LocalDateTime now = LocalDateTime.now();
-
-            boolean showCheckIn = !Boolean.TRUE.equals(newBooking.getIsCheckedIn()) && (now.isAfter(newBooking.getStartTime()));
+            
+            boolean showCheckIn = !Boolean.TRUE.equals(newBooking.getIsCheckedIn()); //&& (now.isAfter(newBooking.getStartTime()));
             
             checkInButton.setVisible(showCheckIn);
             checkInButton.setManaged(showCheckIn);
@@ -239,7 +210,42 @@ public class BookingView extends ListCell<Booking>
 
         }
     }
-    
-   
 
+    private void showPaymentModal(ActionEvent event) {
+     	Booking currentBooking = getItem();
+     	Payment payment = mediator.getPaymentFromBooking(currentBooking);
+     	double subtotalPrice = mediator.computePrice(currentBooking, Session.getUser().getAccountRole());
+     	double taxedPrice = subtotalPrice * tax;
+     	
+        javafx.stage.Stage modalStage = new javafx.stage.Stage();
+        modalStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+        modalStage.setTitle("Total Payment");
+
+        VBox root = new VBox(5);
+        root.setPadding(new javafx.geometry.Insets(20));
+        root.setStyle("-fx-background-color: #f0f0f0;");
+
+        Label subtotalPriceLabel = new Label(String.format("Your SubTotal: $%.2f", subtotalPrice));
+        subtotalPriceLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        
+        Label taxedPriceLabel = new Label(String.format("Your Taxed Amount: $%.2f", taxedPrice));
+        taxedPriceLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+        
+        Label totalPriceLabel = new Label(String.format("Your Total: $%.2f", subtotalPrice + taxedPrice));
+        totalPriceLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
+
+        Button payButton = new Button("Confirm");
+        payButton.setStyle("-fx-font-weight: bold;");
+
+        payButton.setOnAction(e -> {
+        	modalStage.close();
+        });
+
+        root.getChildren().addAll(subtotalPriceLabel, taxedPriceLabel, totalPriceLabel, payButton);
+        Scene scene = new javafx.scene.Scene(root, 400, 300);
+        modalStage.setScene(scene);
+        modalStage.showAndWait();
+        
+        SceneManager.changeScene(event, "HomePage.fxml", "Main Menu");
+    }
 }

@@ -96,7 +96,7 @@ public class BookingEditController implements Initializable {
 
         AccountRole user_type = user.getAccountRole();
 
-        price = bookingController.computePrice(booking, user_type);
+        price = mediator.computePrice(booking, user_type);
 
         String bookingPriceText = String.format("$ %.2f", price);
         bookingPrice.setText(bookingPriceText);
@@ -422,7 +422,7 @@ public class BookingEditController implements Initializable {
             LocalDateTime end = currentBooking.getEndTime();
             dateTime.setText(start.format(timeFormatter) + " - " + end.format(timeFormatter));
 
-            price = bookingController.computePrice(currentBooking, Session.getUser().getAccountRole());
+            price = mediator.computePrice(currentBooking, Session.getUser().getAccountRole());
             bookingPrice.setText(String.format("$ %.2f", price));
 
             showAlert("Booking extended", "You've extended your booking successfully!",  

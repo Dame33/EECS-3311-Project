@@ -16,10 +16,6 @@ public class BookingController {
         mediator.saveUser(user);
     }
 
-    public double computePrice(Booking booking, AccountRole role) {
-        return booking.calculateDepositPrice(role);
-    }
-
     public void extendBooking(Booking booking, Duration extension) {
         booking.setEndTime(booking.getEndTime().plus(extension));
         mediator.saveBooking(booking);
