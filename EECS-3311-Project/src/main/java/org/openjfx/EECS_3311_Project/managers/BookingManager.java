@@ -207,7 +207,7 @@ public class BookingManager {
 	    for (Booking b : bookings) {
 	        LocalDateTime nextStart = b.getStartTime();
 
-	        // only consider bookings that start after/on the current meeting end time
+	        // only consider bookings that start after the current meeting end time
 	        if (nextStart.isAfter(endTime) || nextStart.equals(endTime)) {
 	            // find the earliest start time
 	            if (limit == null || nextStart.isBefore(limit)) {
@@ -221,6 +221,13 @@ public class BookingManager {
 	    }
 
 	    return limit;
+	}
+	
+
+	public Booking cancelBooking(Booking booking) {
+		bookingCSV.delete(booking);
+		booking.setCancelled(true);
+		return booking;
 	}
 	
 
