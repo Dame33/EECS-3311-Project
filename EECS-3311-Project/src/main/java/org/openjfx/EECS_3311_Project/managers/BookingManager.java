@@ -199,6 +199,8 @@ public class BookingManager {
 		
 		return latestEnd;
 	}
+	
+	
 
 
 	public Booking cancelBooking(Booking booking) {

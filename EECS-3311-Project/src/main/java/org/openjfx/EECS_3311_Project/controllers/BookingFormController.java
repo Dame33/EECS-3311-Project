@@ -226,6 +226,8 @@ public class BookingFormController {
         selectedTimes.clear();
         timePicker.getChildren().clear();
         bookingsForDay = mediator.getBookingsByRoomAndDate(selectedRoom.getId(), date);
+        
+        //add for loop, check if meeting started, after 30 min if no check in mediator.bookingcancel
 
         Label roomLabel = new Label((selectedRoom != null ? selectedRoom.getRoomName() : "None"));
         roomLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");

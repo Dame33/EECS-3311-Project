@@ -71,8 +71,12 @@ public class PaymentManager{
 	}
 	
 	public Payment createRecord(Payment payment) {
+		return paymentCSV.create(payment);
 	
-		paymentCSV.create(payment);
-		return payment;
+	}
+
+	public Payment upsertRecord(Payment payment) {
+		// TODO Auto-generated method stub
+		return paymentCSV.upsert(payment);
 	}
 }

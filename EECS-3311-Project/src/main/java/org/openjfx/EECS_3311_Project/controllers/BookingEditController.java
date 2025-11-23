@@ -237,16 +237,21 @@ public class BookingEditController implements Initializable {
             String card = cardNumberField.getText().trim();
             String csv = csvField.getText().trim();
             String expiry = expiryField.getText().trim();
+            
 
             String validationError = validatePaymentFields(card, csv, expiry);
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-            	bookingController.saveBooking(currentBooking, Session.getUser());                
-                modalStage.close();
-                Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
-                
+            	mediator.saveBooking(currentBooking);
+            	Session.getUser().addBooking(currentBooking);
+            	mediator.saveUser(Session.getUser());
+            	
+            	Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
                 mediator.createPaymentRecord(payment);
+                
+            	modalStage.close();
+                
                 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Payment Successful");
@@ -510,10 +515,15 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-                modalStage.close();
-                Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
-                
+            	mediator.saveBooking(currentBooking);
+            	Session.getUser().addBooking(currentBooking);
+            	mediator.saveUser(Session.getUser());
+            	
+            	Payment payment = new Payment(price, parseCard(card), Session.getUser().getId());
                 mediator.createPaymentRecord(payment);
+                
+            	modalStage.close();
+                
                 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Payment Successful");
@@ -547,7 +557,7 @@ public class BookingEditController implements Initializable {
         InstitutionalBillingLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         
         TextField InstitutionalBillingField = new TextField();
-        InstitutionalBillingField.setPromptText("Institutinal Biling Number (10 digits)");
+        InstitutionalBillingField.setPromptText("Institutional Biling Number (10 digits)");
 
         Label InstitutionalNameLabel = new Label("Enter Your Name: ");
         InstitutionalNameLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
@@ -570,11 +580,13 @@ public class BookingEditController implements Initializable {
             if (validationError != null) {
                 errorLabel.setText(validationError);
             } else {
-            	bookingController.saveBooking(currentBooking, Session.getUser());
-                modalStage.close();
+            	mediator.saveBooking(currentBooking);
+            	Session.getUser().addBooking(currentBooking);
+            	mediator.saveUser(Session.getUser());
                 Payment payment = new Payment(price, parseInstitutional(InstitutionalBilling), Session.getUser().getId());
                 
                 mediator.createPaymentRecord(payment);
+                modalStage.close();
                 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Payment Successful");
@@ -582,6 +594,7 @@ public class BookingEditController implements Initializable {
                 alert.setContentText("Payment completed successfully!");
                 alert.showAndWait();
             }
+           
         });
 
         root.getChildren().addAll(priceLabel, InstitutionalBillingLabel, InstitutionalBillingField, InstitutionalNameLabel, InstitutionalNameField, errorLabel, payButton);

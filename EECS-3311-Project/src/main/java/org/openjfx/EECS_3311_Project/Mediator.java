@@ -18,7 +18,7 @@ public class Mediator {
     private static Mediator instance;
 //
 //    private Session session;
-    	private final BookingManager bookingManager = new BookingManager();
+    private final BookingManager bookingManager = new BookingManager();
      private final UserManager userManager = new UserManager();
      private final AccountRoleManager accountRoleManager = new AccountRoleManager();
      private final RoomManager roomManager = new RoomManager();
@@ -145,6 +145,10 @@ public class Mediator {
 	public Payment createPaymentRecord(Payment payment) {
 		return paymentManager.createRecord(payment);
 		
+	}
+	
+	public Payment upsertPaymentRecord(Payment payment) {
+		return paymentManager.upsertRecord(payment);
 	}
 	
 	public AccountRoleManager getAccountRoleManager() {

@@ -1,5 +1,6 @@
 package org.openjfx.EECS_3311_Project.views;
 
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -15,8 +16,12 @@ import org.openjfx.EECS_3311_Project.Mediator;
 import org.openjfx.EECS_3311_Project.Session;
 import org.openjfx.EECS_3311_Project.managers.SceneManager;
 import org.openjfx.EECS_3311_Project.model.Booking;
+import org.openjfx.EECS_3311_Project.model.AccountRole;
+import org.openjfx.EECS_3311_Project.model.Payment;
 
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class BookingView extends ListCell<Booking>
 {
@@ -29,6 +34,7 @@ public class BookingView extends ListCell<Booking>
     private final Button editButton;
     private final Button checkInButton;
     private final Region emptySpace;
+    private static final double tax = 0.13;
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h:mm a");
 
     public BookingView(boolean isHost)
@@ -120,7 +126,16 @@ public class BookingView extends ListCell<Booking>
                  
                  confirmAlert2.showAndWait().ifPresent(response -> {
                 	 if(response == ButtonType.OK) {
+                		 LocalDateTime now = LocalDateTime.now();
+                		 LocalDateTime startTime = currentBooking.getStartTime();
+                		 
+                		 //boolean depositValid = !now.isAfter(startTime.plusMinutes(30));
+                		 //tracks if deposit valid or not
+                		 
+                		 //here
+                		 
                 		 currentBooking.checkIn();
+                		 currentBooking.setCheckInTime(now);
                 		 Mediator.getInstance().saveBooking(currentBooking);
                 		 Session.setEditBooking(currentBooking);
                 		 
@@ -143,6 +158,31 @@ public class BookingView extends ListCell<Booking>
         	
         }
         );
+        
+        //private void finalPayment(Booking booking, boolean valid) {
+        	
+        //}
+		/*
+		 * private void finalPayment(Booking booking, boolean valid) { AccountRole role
+		 * = Session.getUser().getAccountRole(); long totalMins =
+		 * Duration.between(booking.getStartTime(), booking.getEndTime()); double hours
+		 * = totalMins/60; double priceWithDeposit = booking.depositAndTotalPrice(role,
+		 * hours); double priceWithoutDeposit = booking.calculateTotalPrice(role,
+		 * hours); double charge; if(valid) { charge = priceWithDeposit;
+		 * 
+		 * } else { charge = priceWithoutDeposit; } double totalDue = charge * 1.13;
+		 * Alert paymentAlert = new Alert(Alert.AlertType.CONFIRMATION);
+		 * paymentAlert.setTitle("Finalize Payment");
+		 * paymentAlert.setHeaderText("Confirm final payment");
+		 * paymentAlert.setContentText(msg.toString());
+		 * 
+		 * Button paymentButton = new Button("Confirm Payment?");
+		 * paymentButton.setOnAction(event -> { if (event == ButtonType.OK) { Payment
+		 * payment = new Payment(charge); } });
+		 * 
+		 * }
+		 */
+        
         
         
         if(isHost)
@@ -196,5 +236,7 @@ public class BookingView extends ListCell<Booking>
 
         }
     }
+    
+   
 
 }

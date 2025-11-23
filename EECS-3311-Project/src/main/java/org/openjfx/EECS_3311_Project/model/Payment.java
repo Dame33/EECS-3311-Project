@@ -18,9 +18,10 @@ public class Payment implements ICSVDataObject{
     public Payment(String csvRow) {
         // amount, lastDigitsOfCard, userId
         String[] tokens = csvRow.split(",");
-        this.amount = Double.parseDouble(tokens[0]);
-        this.cardNumber = tokens[1];
-        this.userId = tokens[2];
+        this.id = tokens[0].trim();
+        this.amount = Double.parseDouble(tokens[1].trim());
+        this.cardNumber = tokens[2].trim();
+        this.userId = tokens[3].trim();
     }
     
     
