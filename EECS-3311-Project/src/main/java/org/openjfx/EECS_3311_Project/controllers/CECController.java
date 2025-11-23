@@ -40,7 +40,7 @@ public class CECController {
                     .stream()
                     .filter(u -> !u.getUserType().equalsIgnoreCase("CEC"))
                     .toList();
-            // -----------------------------------------
+            
 
             for (User u : users) {
                 HBox row = createAdminRow(u);
@@ -89,5 +89,10 @@ public class CECController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    @FXML
+    public void initialize() {
+        getAdminsEditorPage();
     }
 }
