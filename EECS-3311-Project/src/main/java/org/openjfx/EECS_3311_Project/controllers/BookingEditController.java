@@ -132,7 +132,7 @@ public class BookingEditController implements Initializable {
         if (newName == null || newName.isBlank() ||
             studentId == null || studentId.isBlank()) {
             
-            showAlert( "Missing Fields", "Please fill in all required fields", "Booking name and Student/Organization ID cannot be empty.", Alert.AlertType.ERROR);
+            showAlert("Missing Fields", "Please fill in all required fields", "Booking name and Student/Organization ID cannot be empty.", Alert.AlertType.ERROR);
             return;
         }
         
