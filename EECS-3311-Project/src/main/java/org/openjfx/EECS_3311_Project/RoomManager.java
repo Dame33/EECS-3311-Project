@@ -6,7 +6,7 @@ import org.openjfx.EECS_3311_Project.csv.RoomCSVOperations;
 import org.openjfx.EECS_3311_Project.model.Room;
 
 public class RoomManager {
-	RoomCSVOperations roomsCSV = new RoomCSVOperations();
+	public RoomCSVOperations roomsCSV = new RoomCSVOperations();
 
 	public List<Room> getAllRooms() {
 		return roomsCSV.readAll(); 

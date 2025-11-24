@@ -6,6 +6,7 @@ import org.openjfx.EECS_3311_Project.model.Booking;
 import org.openjfx.EECS_3311_Project.model.Payment;
 import org.openjfx.EECS_3311_Project.model.User;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -254,7 +255,15 @@ public class BookingManager {
 		return null;
 	}
 	
-    public double computePrice(Booking booking, AccountRole role) {
-        return booking.calculateDepositPrice(role);
+    public double calculateDepositPrice(Booking booking, AccountRole role, Duration duration) {
+        return booking.calculateDepositPrice(role, duration);
+    }
+    
+    public double calculateTotalPrice(Booking booking, AccountRole role) {
+    	return booking.calculateTotalPrice(role);
+    }
+    
+    public double calculateExtendPrice(Booking booking, AccountRole role, Duration extension) {
+        return booking.calculateExtendPrice(role, extension);
     }
 }

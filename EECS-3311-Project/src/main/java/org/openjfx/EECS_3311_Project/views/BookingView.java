@@ -215,7 +215,8 @@ public class BookingView extends ListCell<Booking>
     private void showPaymentModal(ActionEvent event) {
      	Booking currentBooking = getItem();
      	Payment payment = mediator.getPaymentFromBooking(currentBooking);
-     	double subtotalPrice = payment.getAmount();
+     	
+     	double subtotalPrice = mediator.calculateTotalPrice(currentBooking, Session.getUser().getAccountRole());
      	double taxedPrice = subtotalPrice * tax;
      	
         javafx.stage.Stage modalStage = new javafx.stage.Stage();
