@@ -255,8 +255,8 @@ public class BookingManager {
 		return null;
 	}
 	
-    public double calculateDepositPrice(Booking booking, AccountRole role, Duration duration) {
-        return booking.calculateDepositPrice(role, duration);
+    public double calculateDepositPrice(Booking booking, AccountRole role) {
+        return booking.calculateDepositPrice(role);
     }
     
     public double calculateTotalPrice(Booking booking, AccountRole role) {

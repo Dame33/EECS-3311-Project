@@ -171,8 +171,16 @@ public class Booking implements ICSVDataObject {
                 startTime.toString(), endTime.toString(), checkedTime, studentOrOrganizationId, Boolean.toString(cancelled));
     }
     
-    public double calculateDepositPrice(AccountRole user_type, Duration duration) {
-    	if (duration.toMinutes() < 60) {
+    public double calculateDepositPrice(AccountRole user_type) {
+    	LocalDateTime start = this.getStartTime(); 
+    	LocalDateTime end = this.getEndTime();
+    	
+    	long timeDiff = Duration.between(start, end).toMinutes();
+    	
+    	System.out.println(timeDiff);
+
+    	
+    	if (timeDiff < 60) {
         	return user_type.getHourlyRate() / 2;
     	} else {
         	// req says user is charged 1 hour deposit fee upfront
@@ -186,11 +194,7 @@ public class Booking implements ICSVDataObject {
      	LocalDateTime start = this.getStartTime(); 
     	LocalDateTime end = this.getEndTime();
     	
-    	long roundedHours = (long) Math.ceil(Duration.between(start, end).toMinutes() / 60.0);
-
-    	Duration roundedDuration = Duration.ofHours(roundedHours);
-   
-    	long hours = roundedDuration.toHours();
+    	double hours = Duration.between(start, end).toMinutes() / 60.0;
     	return user_type.getHourlyRate() * (hours -1);
     }
     
