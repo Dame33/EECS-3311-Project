@@ -130,7 +130,7 @@ public class BookingEditController implements Initializable {
         if (newName == null || newName.isBlank() ||
             studentId == null || studentId.isBlank()) {
             
-            showAlert( "Missing Fields", "Please fill in all required fields", "Booking name and Student/Organization ID cannot be empty.", Alert.AlertType.ERROR);
+            showAlert("Missing Fields", "Please fill in all required fields", "Booking name and Student/Organization ID cannot be empty.", Alert.AlertType.ERROR);
             return;
         }
         
@@ -546,7 +546,7 @@ public class BookingEditController implements Initializable {
         Label priceLabel = new Label(String.format("Deposit amount due: $%.2f", price));
         priceLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold;");
 
-        Label InstitutionalBillingLabel = new Label("Enter Institutinal Biling Number (10 digits): ");
+        Label InstitutionalBillingLabel = new Label("Enter Institutional Biling Number (10 digits): ");
         InstitutionalBillingLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         
         TextField InstitutionalBillingField = new TextField();
